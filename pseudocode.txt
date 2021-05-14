@@ -1,0 +1,32 @@
+Set up
+
+Initial Page
+- header at the top with the name
+- immediately below the header is a form with a text input for a name, a checkbox which disables the text input, and a textarea input for a message
+- below the form is a list of all the messages entered before
+- initialize Firebase
+
+Adding messages to the page
+- event listener on the form on submit
+  - grabs the values from the text input and textarea
+    - if there is a name in the text input, use the name, else use anonymous
+  - sets the state of form to empty
+  - add a new message object to Firebase that includes the author, date, and message
+  - on updating the value in Firebase, set the state of the message board to include the new comment
+  - do the above in a useEffect hook tied to the userInput state
+- event listener on like
+  - register when like button is clicked
+  - update Firebase likes property on message
+  - render message on page
+
+States
+- userInput state for the form
+- messageBoard state for the list of messages
+
+Firebase
+- top level is filled with boards objects
+- each boards object has a topicName and an array of messages
+  - stretch goal is to add permissions on who can see each board
+- each messages array is filled with messages objects
+- each messages object has a name, date, and message
+  - the stretch goal is to include a comments object on each message, which can nest more comment objects and a likes property which tracks the number of likes
