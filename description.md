@@ -4,7 +4,11 @@ This will be a motivational message board for people to share positive messages 
 
 ## MVP
 
-A basic public message board with the ability to enter in a message, and a name/stay anonymous. Each message component will have a date, a name, and the message.This information will be stored in Firebase
+- Form to enter a message, your name, or a checkbox to remain anonymous
+- When the form is submitted, add the message to Firebase and update the state on the page
+- Each message component will have a date, a name, and the message. 
+- on Firebase update, render all messages on page
+- This information will be stored in Firebase
 
 ## Stretch Goals
 

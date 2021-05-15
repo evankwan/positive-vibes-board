@@ -2,7 +2,7 @@ Set up
 
 Initial Page
 - header at the top with the name
-- immediately below the header is a form with a text input for a name, a checkbox which disables the text input, and a textarea input for a message
+- immediately below the header is a form with a text input for a name, a checkbox which disables the name input so the user can remain anonymous, and a textarea input for a message
 - below the form is a list of all the messages entered before
 - initialize Firebase
 
