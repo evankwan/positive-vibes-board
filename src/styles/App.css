@@ -4,9 +4,19 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 
 *, *:before, *:after {box-sizing: inherit}
 
-.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; border: 0; padding: 0; white-space: nowrap; clip-path: inset(100%); clip: rect(0 0 0 0); overflow: hidden;}
+.srOnly { position: absolute; width: 1px; height: 1px; margin: -1px; border: 0; padding: 0; white-space: nowrap; clip-path: inset(100%); clip: rect(0 0 0 0); overflow: hidden;}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  background-color: #111;
+}
+
 header {
-  background-color: rgb(11, 11, 93);
+  background-color: #1d1d1d;
+  border-bottom: 1px solid #919191;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,11 +28,17 @@ h1 {
   margin: 0;
   padding: 0;
   text-align: center;
+  font-size: 8rem;
+}
+
+h2 {
+  color: white;
+  font-size: 3rem;
 }
 
 .wrapper {
-  width: 90%;
-  max-width: 1350px;
+  width: 85%;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -30,6 +46,89 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+}
+
+.messageForm {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+}
+
+.formNameContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  margin: 0 0 20px;
+}
+
+.nameInput {
+  width: 50%;
+  height: 50px;
+  border: none;
+  border-bottom: 1px solid #333;
+  margin: 0;
+  font-size: 1.6rem;
+  padding: 5px;
+  color: #f9f9f9;
+  background-color: #222;
+}
+
+.anonymousContainer {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  margin: 5px;
+}
+
+.anonymousLabel {
+  font-size: 1.8rem;
+  color: #f9f9f9;
+}
+
+.anonymousCheckbox {
+  height: 20px;
+  width: 20px;
+}
+
+.formMessageContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.messageField {
+  height: 100px;
+  width: 100%;
+  border: 1px solid #333;
+  border-radius: 5px;
+  font-size: 1.6rem;
+  padding: 5px;
+  resize: none;
+  color: #f9f9f9;
+  background-color: #222;
+}
+
+.formSubmitContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 5px;
+}
+
+.submitButton {
+  width: 50%;
+  height: 50px;
+  font-size: 1.6rem;
+  background-color: #222;
+  border: 2px solid #333;
+  color: #f9f9f9;
+  cursor: pointer;
 }
 
 .mainContainer {
@@ -43,6 +142,29 @@ h1 {
   padding: 0;
 }
 
+.messageBoard {
+  flex-basis: 80%;
+}
+
+.boardButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  color: #f9f9f9;
+  background-color: #222;
+  border: 2px solid #333;
+  width: 100%;
+  cursor: pointer;
+  margin: 10px 0;
+  font-size: 2rem;
+}
+
+ul {
+  margin: 20px;
+  padding: 0;
+}
+
 li {
   list-style: none;
   margin: 0;
@@ -52,6 +174,15 @@ li {
 .boardsListHeading,
 .messagesListHeading {
   text-align: center;
+  color: #f9f9f9;
+}
+
+.boardsListHeading {
+  font-size: 3.2rem;
+}
+
+.messagesListHeading {
+  font-size: 4rem;
 }
 
 .messagesBoardContainer {
@@ -61,7 +192,18 @@ li {
 }
 
 .messageBoardPost {
-  border-radius: 20px;
-  box-shadow: 0px 2px 3px 0px #232323;
+  border-radius: 5px;
+  border: 2px solid #333;
+  background-color: #222;
   padding: 20px;
+  font-size: 20px;
+  margin: 20px 0;
+  color: #f9f9f9;
 }
+
+.boardButton:hover,
+.submitButton:hover,
+.messageBoardPost:hover {
+  border: 2px solid #666;
+}
+

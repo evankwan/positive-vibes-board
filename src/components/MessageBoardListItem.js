@@ -1,6 +1,15 @@
-const MessageBoardListItem = ({ boardName: { topicName } }) => {
+const MessageBoardListItem = ({ boardName, clickEvent }) => {
+  const { key, name: { topicName } } = boardName;
   return (
-    <li>{topicName}</li>
+    <li>
+      <button 
+        className="boardButton" 
+        onClick={() => {
+          clickEvent(key);
+        }}
+      >
+        {topicName}</button>
+    </li>
   )
 }
 

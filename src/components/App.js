@@ -23,7 +23,10 @@ function App() {
   
   // database
   const dbRef = firebase.database().ref();
-  const publicMessagesRef = firebase.database().ref(`${currentBoard}/messages`);
+  const currentMessagesRef = firebase.database().ref(`${currentBoard}/messages`);
+
+  // variables
+  let currentBoardName = 'Public';
 
   // functions
   const handleChange = ({ target }) => {
@@ -47,7 +50,11 @@ function App() {
     setUserMessageInput('');
 
     // update the database
-    publicMessagesRef.push({message: submittedMessage, name: submittedName, date: submittedDate});
+    currentMessagesRef.push({message: submittedMessage, name: submittedName, date: submittedDate});
+  }
+
+  const handleBoardChange = (key) => {
+    setCurrentBoard(key);
   }
 
   // useEffect hooks
@@ -59,13 +66,15 @@ function App() {
       for (let key in data) {
         newState.push({key: key, name: data[key]});
       }
+      currentBoardName = data[currentBoard].topicName;
+      console.log(currentBoardName);
       setBoards(newState);
     })
   }, [])
 
   // messages update
   useEffect(() => {
-    publicMessagesRef.on("value", (response) => {
+    currentMessagesRef.on("value", (response) => {
       const newState = [];
       const data = response.val();
       for (let key in data) {
@@ -73,12 +82,18 @@ function App() {
       };
       setMessages(newState);
     })
-  }, []);
+  }, [currentBoard]);
 
   // page elements
   const boardsList = boards.map((board) => {
     return (
-      <MessageBoardListItem key={board.key} boardName={board.name}/>
+      <MessageBoardListItem 
+        key={board.key} 
+        boardName={board} 
+        clickEvent={(key) => {
+          handleBoardChange(key);
+        }} 
+      />
     )
   })
 
@@ -90,15 +105,10 @@ function App() {
 
   return (
     <Fragment>
+      <script src="https://kit.fontawesome.com/7627ee882a.js" crossorigin="anonymous"></script>
       <Header />
-
-      <div className="wrapper">
-        <Form submitEvent={handleSubmit} changeEvent={handleChange} nameValue={userNameInput} messageValue={userMessageInput} />
-      </div>
-
       <main>
         <div className="wrapper mainContainer">
-
           <aside className="boardsListContainer">
             <h3 className="boardsListHeading">Available Message Boards</h3>
             <ul>
@@ -106,14 +116,18 @@ function App() {
             </ul>
           </aside>
 
-          <section className="messagesBoardContainer">
-            <h3 className="messagesListHeading">Latest Messages</h3>
-            <ul>
-              {messagesList}
-            </ul>
-          </section>
+          <div className="messageBoard">
+            <Form submitEvent={handleSubmit} changeEvent={handleChange} nameValue={userNameInput} messageValue={userMessageInput} />
 
+            <section className="messagesBoardContainer">
+              <h3 className="messagesListHeading">Latest Messages on {currentBoardName} Board</h3>
+              <ul>
+                {messagesList}
+              </ul>
+            </section>
+          </div>
         </div>
+        {/* wrapper ended */}
       </main>
     </Fragment>
   );
