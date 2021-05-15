@@ -3,7 +3,8 @@ import { Fragment, useEffect, useState } from 'react';
 import firebase from '../config/firebase';
 import Header from './Header';
 import Form from './Form';
-import getFormattedDate from './getFormattedDate'
+import getFormattedDate from './getFormattedDate';
+import Message from './Message';
 
 
 function App() {
@@ -11,23 +12,24 @@ function App() {
   const [ messages, setMessages ] = useState([]);
   const [ userNameInput, setUserNameInput ] = useState('');
   const [ userMessageInput, setUserMessageInput ] = useState('');
+  const [ currentBoard, setCurrentBoard ] = useState('public-board');
 
   // selectors
   const formNameInput = document.getElementById('name');
   const formAnonymousCheck = document.getElementById('anonymous');
   const formMessageInput = document.getElementById('message');
   
-
+  // database
   const dbRef = firebase.database().ref();
-  const publicMessagesRef = firebase.database().ref('public-board/messages');
+  const publicMessagesRef = firebase.database().ref(`${currentBoard}/messages`);
 
+  // functions
   const handleChange = ({ target }) => {
     if (target.id === "name") {
       setUserNameInput(target.value);
     } else if (target.id === "message") {
       setUserMessageInput(target.value);
     }
-    
   }
 
   const handleSubmit = (event) => {
@@ -46,18 +48,24 @@ function App() {
     publicMessagesRef.push({message: submittedMessage, name: submittedName, date: submittedDate});
   }
 
-  
-
+  // useEffect hooks
   useEffect(() => {
     publicMessagesRef.on("value", (response) => {
       const newState = [];
       const data = response.val();
       for (let key in data) {
-        newState.unshift(data[key])
+        newState.unshift({key: key, details: data[key]})
       };
       setMessages(newState);
     })
   }, []);
+
+  // page elements
+  const messagesList = messages.map((messageObject) => {
+    return (
+      <Message key={messageObject.key} content={messageObject} />
+    )
+  })
 
   return (
     <Fragment>
@@ -67,17 +75,8 @@ function App() {
         <Form submitEvent={handleSubmit} changeEvent={handleChange} nameValue={userNameInput} messageValue={userMessageInput} />
       </div>
 
-      <ul>
-        {
-          messages.map((messageObject) => {
-            return (
-              <li>
-                <p>Post by: {messageObject.name} on {messageObject.date}</p>
-                <p>{messageObject.message}</p>
-              </li>
-            )
-          })
-        }
+      <ul className="messagesBoard">
+        {messagesList}
       </ul>
       
       

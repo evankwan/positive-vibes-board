@@ -6,7 +6,7 @@ const getFormattedDate = (currentDate) => {
   const month = getMonthName(currentDate.getMonth());
   const dateNumber = currentDate.getDate();
   const year = currentDate.getFullYear();
-  const dateString = `Posted ${dayOfWeek}, ${month} ${dateNumber}, ${year}`;
+  const dateString = `${dayOfWeek}, ${month} ${dateNumber}, ${year}`;
 
   return dateString
 }
