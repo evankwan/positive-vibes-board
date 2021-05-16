@@ -32,9 +32,11 @@ const Form = ({ submitEvent, changeEvent, nameValue, messageValue, expandForm, i
             <label 
               htmlFor="anonymous" 
               className="anonymousLabel" 
-              tabindex="0"
+              tabIndex="0"
               onKeyDown={keydownCheckbox}
-            >Remain Anonymous</label>
+            >
+              Remain Anonymous
+            </label>
             <FontAwesomeIcon icon={isChecked ? "check-square" : "square"} /> 
             <input 
               type="checkbox" 
@@ -42,7 +44,7 @@ const Form = ({ submitEvent, changeEvent, nameValue, messageValue, expandForm, i
               id="anonymous" 
               className="anonymousCheckbox" 
               onClick={switchCheckbox}
-              tabindex="-1"
+              tabIndex="-1"
             />
           </div>
         </div>

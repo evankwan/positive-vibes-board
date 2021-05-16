@@ -21,11 +21,12 @@ function App() {
   const [ userNameInput, setUserNameInput ] = useState('');
   const [ userMessageInput, setUserMessageInput ] = useState('');
   const [ boards, setBoards ] = useState([]);
-  const [currentBoard, setCurrentBoard] = useState(`-M_qnb3Aah2p0BDqMmgq`);
+  const [ currentBoard, setCurrentBoard ] = useState(`-M_qnb3Aah2p0BDqMmgq`);
   const [ currentBoardName, setCurrentBoardName] = useState('Public');
   const [ newBoardInput, setNewBoardInput ] = useState('');
   const [ expanded, setExpanded ] = useState(false);
   const [ anonymousChecked, setAnonymousChecked ] = useState(false);
+  const [ addingNewBoard, setAddingNewBoard ] = useState(false);
 
   // selectors
   const formNameInput = document.getElementById('name');
@@ -69,6 +70,7 @@ function App() {
     formNameInput.focus();
   }
 
+  // handles hitting enter when focused on anonymous label/checkbox
   const handleEnterAnonymous = ({ key }) => {
     console.log('keydown');
 
@@ -140,6 +142,8 @@ function App() {
     // update the database
     dbRef.push({ topicName: submittedBoardName, messages: {} });
 
+    setAddingNewBoard(true);
+
     // if the form is not expanded, expand
     if (!expanded) {
       await setExpanded(true)
@@ -162,17 +166,22 @@ function App() {
         newState.push({key: key, name: data[key]});
       }
 
+      // change board to new board
+      if (addingNewBoard) {
+        const newBoard = newState[newState.length - 1];
+        setCurrentBoard(newBoard.key);
+        setCurrentBoardName(newBoard.name.topicName);
+        setAddingNewBoard(false);
+      }
+
       // set the boards state 
       setBoards(newState);
     })
-  }, [])
+  }, [addingNewBoard, anonymousChecked, expanded])
 
   // messages update
   useEffect(() => {
     currentMessagesRef.on("value", (snapshot) => {
-      // test console log
-      console.log('start');
-
       // initialize new state
       const newState = [];
       const data = snapshot.val();
@@ -185,7 +194,7 @@ function App() {
       // set the messages state
       setMessages(newState);
     })
-  }, [currentBoard]);
+  }, [currentBoard])
 
   // page elements
   const boardsList = boards.map((board) => {
