@@ -55,6 +55,9 @@ function App() {
 
     // update the database
     currentMessagesRef.push({message: submittedMessage, name: submittedName, date: submittedDate, likes: 0});
+
+    // set focus on form again
+    formNameInput.focus();
   }
 
   const handleAnonCheck = () => {
@@ -93,17 +96,22 @@ function App() {
     setNewBoardInput(target.value);
   }
 
-  const handleNewBoardSubmit = (event) => {
+  const handleNewBoardSubmit = async (event) => {
     event.preventDefault();
 
     const submittedBoardName = formNewBoard.value;
-    console.log(submittedBoardName);
 
     // update the userInput state
     setNewBoardInput('');
 
     // update the database
     dbRef.push({ topicName: submittedBoardName, messages: {} });
+
+    if (!expanded) {
+      await setExpanded(true)
+    }
+
+    formNameInput.focus();
   }
 
   // useEffect hooks
@@ -113,7 +121,7 @@ function App() {
       const newState = [];
       const data = response.val();
       for (let key in data) {
-        newState.unshift({key: key, name: data[key]});
+        newState.push({key: key, name: data[key]});
       }
       setBoards(newState);
     })
