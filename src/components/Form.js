@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const Form = ({ submitEvent, changeEvent, nameValue, messageValue, expandForm, isExpanded }) => {
+const Form = ({ submitEvent, changeEvent, nameValue, messageValue, expandForm, isExpanded, switchCheckbox, isChecked }) => {
   return (
     <div className="formContainer">
       <div className="formHeadingContainer">
@@ -16,21 +16,49 @@ const Form = ({ submitEvent, changeEvent, nameValue, messageValue, expandForm, i
       >
         <div className="formNameContainer">
           <label htmlFor="name" className="srOnly">Enter your name</label>
-          <input id="name" className="nameInput" type="text" onChange={changeEvent} placeholder="Enter your name" value={nameValue} required />
+          <input 
+            id="name" 
+            className="nameInput" 
+            type="text" 
+            onChange={changeEvent} 
+            placeholder="Enter your name" 
+            value={nameValue} 
+            autoComplete="off"
+            required 
+          />
 
           <div className="anonymousContainer">
             <label htmlFor="anonymous" className="anonymousLabel">Remain Anonymous</label>
-            <input type="checkbox" name="anonymous" id="anonymous" className="anonymousCheckbox" />
+            <FontAwesomeIcon icon={isChecked ? "check-square" : "square"} /> 
+            <input 
+              type="checkbox" 
+              name="anonymous" 
+              id="anonymous" 
+              className="anonymousCheckbox" 
+              onClick={switchCheckbox}
+            />
           </div>
         </div>
         
         <div className="formMessageContainer">
           <label htmlFor="message" className="srOnly">Enter Message</label>
-          <textarea name="message" id="message" className="messageField" onChange={changeEvent} value={messageValue} placeholder="Enter Message" required></textarea>
+          <textarea 
+            name="message" 
+            id="message" 
+            className="messageField" 
+            onChange={changeEvent} 
+            value={messageValue} 
+            placeholder="Enter Message" 
+            required
+          ></textarea>
         </div>
 
         <div className="formSubmitContainer">
-          <input type="submit" value="Post Your Message" className="submitButton" />
+          <input 
+            type="submit" 
+            value="Post Your Message" 
+            className="submitButton" 
+          />
         </div>
       </form>
     </div>

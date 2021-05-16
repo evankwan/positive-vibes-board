@@ -29,6 +29,20 @@ header {
   margin-right: 40px;
 }
 
+.fa-heart {
+  color: #f84a2f;
+  margin-right: 10px;
+}
+
+.fa-square {
+  font-size: 2rem;
+  color: #f9f9f9;
+}
+.fa-check-square {
+  font-size: 2rem;
+  color: #f9f9f9;
+}
+
 h1 {
   color: #f1e94e;
   margin: 0;
@@ -128,12 +142,17 @@ h2 {
 .anonymousLabel {
   font-size: 1.8rem;
   color: #f9f9f9;
+  margin-right: 10px;
 }
 
 .anonymousCheckbox {
   height: 20px;
   width: 20px;
   background-color: #232323;
+  position: relative;
+  left: -20px;
+  z-index: 20;
+  opacity: 0;
 }
 
 .formMessageContainer {
@@ -168,6 +187,7 @@ h2 {
   width: 50%;
   height: 50px;
   font-size: 2rem;
+  font-weight: bold;
   background-color: #222;
   border: 2px solid #333;
   color: #f9f9f9;
@@ -192,6 +212,40 @@ h2 {
 
 .messageBoard {
   flex-basis: 75%;
+}
+
+.boardFormContainer {
+  width: 100%;
+  padding: 10px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #333;
+}
+
+.newBoardForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.boardNameInput {
+  width: 90%;
+  min-width: 200px;
+  color: #f9f9f9;
+  background-color: #222;
+  border: 2px solid #333;
+  font-size: 1.8rem;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #222;
+  margin-bottom: 10px;
+}
+
+.boardSubmit {
+  width: 90%;
+  min-width: 200px;
 }
 
 .boardButton {
