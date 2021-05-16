@@ -1,8 +1,19 @@
-const Form = ({ submitEvent, changeEvent, nameValue, messageValue }) => {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+const Form = ({ submitEvent, changeEvent, nameValue, messageValue, expandForm, isExpanded }) => {
   return (
     <div className="formContainer">
-      <h2>Post To The  Board</h2>
-      <form action="submit" className="messageForm" onSubmit={submitEvent}>
+      <div className="formHeadingContainer">
+        <h2 className="formHeading" onClick={expandForm}>
+          Post To The Board&nbsp;
+          <FontAwesomeIcon icon="caret-down" /> 
+        </h2>
+      </div>
+      <form 
+        action="submit"
+        className={`messageForm ${isExpanded ? "expandedForm" : ""}`}
+        onSubmit={submitEvent}
+      >
         <div className="formNameContainer">
           <label htmlFor="name" className="srOnly">Enter your name</label>
           <input id="name" className="nameInput" type="text" onChange={changeEvent} placeholder="Enter your name" value={nameValue} required />

@@ -1,20 +1,23 @@
 import '../styles/App.css';
 import { Fragment, useEffect, useState } from 'react';
 import firebase from '../config/firebase';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faSun, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import Header from './Header';
 import Form from './Form';
 import getFormattedDate from './getFormattedDate';
 import Message from './Message';
 import MessageBoardListItem from './MessageBoardListItem';
 
-
 function App() {
+  library.add(faSun, faCaretDown);
   // useState declarations
   const [ messages, setMessages ] = useState([]);
   const [ userNameInput, setUserNameInput ] = useState('');
   const [ userMessageInput, setUserMessageInput ] = useState('');
   const [ boards, setBoards ] = useState([]);
   const [ currentBoard, setCurrentBoard ] = useState('publicBoard');
+  const [ expanded, setExpanded ] = useState(false);
 
   // selectors
   const formNameInput = document.getElementById('name');
@@ -51,6 +54,14 @@ function App() {
 
     // update the database
     currentMessagesRef.push({message: submittedMessage, name: submittedName, date: submittedDate});
+  }
+
+  const handleFormClick = () => {
+    if (expanded) {
+      setExpanded(false)
+    } else {
+      setExpanded(true)
+    }
   }
 
   const handleBoardChange = (key) => {
@@ -110,14 +121,21 @@ function App() {
       <main>
         <div className="wrapper mainContainer">
           <aside className="boardsListContainer">
-            <h3 className="boardsListHeading">Available Message Boards</h3>
+            <h3 className="boardsListHeading">Message Boards</h3>
             <ul>
               {boardsList}
             </ul>
           </aside>
 
           <div className="messageBoard">
-            <Form submitEvent={handleSubmit} changeEvent={handleChange} nameValue={userNameInput} messageValue={userMessageInput} />
+            <Form 
+              changeEvent={handleChange} 
+              expandForm={handleFormClick}
+              submitEvent={handleSubmit} 
+              messageValue={userMessageInput} 
+              nameValue={userNameInput}
+              isExpanded={expanded}
+            />
 
             <section className="messagesBoardContainer">
               <h3 className="messagesListHeading">Latest Messages on {currentBoardName} Board</h3>
