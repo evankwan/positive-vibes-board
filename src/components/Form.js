@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const Form = ({ submitEvent, changeEvent, nameValue, messageValue, expandForm, isExpanded, switchCheckbox, isChecked }) => {
+const Form = ({ submitEvent, changeEvent, nameValue, messageValue, expandForm, isExpanded, switchCheckbox, isChecked, keydownCheckbox }) => {
   return (
     <div className="formContainer">
       <div className="formHeadingContainer">
@@ -18,17 +18,23 @@ const Form = ({ submitEvent, changeEvent, nameValue, messageValue, expandForm, i
           <label htmlFor="name" className="srOnly">Enter your name</label>
           <input 
             id="name" 
-            className="nameInput" 
+            className={`nameInput ${isChecked ? "disabled" : ""}`} 
             type="text" 
             onChange={changeEvent} 
             placeholder="Enter your name" 
             value={nameValue} 
             autoComplete="off"
-            required 
+            disabled={isChecked}
+            required={!isChecked}
           />
 
           <div className="anonymousContainer">
-            <label htmlFor="anonymous" className="anonymousLabel">Remain Anonymous</label>
+            <label 
+              htmlFor="anonymous" 
+              className="anonymousLabel" 
+              tabindex="0"
+              onKeyDown={keydownCheckbox}
+            >Remain Anonymous</label>
             <FontAwesomeIcon icon={isChecked ? "check-square" : "square"} /> 
             <input 
               type="checkbox" 
@@ -36,6 +42,7 @@ const Form = ({ submitEvent, changeEvent, nameValue, messageValue, expandForm, i
               id="anonymous" 
               className="anonymousCheckbox" 
               onClick={switchCheckbox}
+              tabindex="-1"
             />
           </div>
         </div>

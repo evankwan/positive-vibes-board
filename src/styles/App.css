@@ -132,10 +132,16 @@ h2 {
   background-color: #222;
 }
 
+.disabled {
+  color: #444;
+  border: 2px solid #222;
+}
+
 .anonymousContainer {
   width: 50%;
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 5px;
 }
 
@@ -143,6 +149,7 @@ h2 {
   font-size: 1.8rem;
   color: #f9f9f9;
   margin-right: 10px;
+  padding: 10px;
 }
 
 .anonymousCheckbox {
@@ -153,6 +160,12 @@ h2 {
   left: -20px;
   z-index: 20;
   opacity: 0;
+}
+
+.anonymousLabel:active,
+.anonymousLabel:focus {
+  outline: 3px solid;
+  padding: 10px;
 }
 
 .formMessageContainer {
