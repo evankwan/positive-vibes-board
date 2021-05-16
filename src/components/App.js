@@ -82,6 +82,7 @@ function App() {
 
   const handleBoardChange = async (key) => {
     setCurrentBoard(key);
+    console.log(key);
     const dbResponse = await dbRef.child(key).get(`topicName`);
     const board = await dbResponse.toJSON();
     const { topicName } = board;
@@ -128,7 +129,7 @@ function App() {
       };
       setMessages(newState);
     })
-  }, []);
+  }, [currentBoard]);
 
   // page elements
   const boardsList = boards.map((board) => {
