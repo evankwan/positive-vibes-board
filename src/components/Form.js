@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+// component for the new message form
 const Form = ({ submitEvent, changeEvent, nameValue, messageValue, expandForm, isExpanded, switchCheckbox, isChecked, keydownCheckbox }) => {
   return (
     <div className="formContainer">

@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+// Header component
 const Header = () => {
   return (
     <header>

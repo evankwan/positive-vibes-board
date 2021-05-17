@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const Comment = ({ commentObject: { details, key }, updateLikes }) => {
-  const { date, likes, message, name } = details;
+// component for each Comment on a message
+const Comment = ({ commentObject: { details: { date, likes, message, name }, key }, updateLikes }) => {
   return (
     <li className="commentListItem">
       <p className="commentHead">Posted by {name} on {date}</p>

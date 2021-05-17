@@ -1,3 +1,4 @@
+// utility function to format the day of the week
 const getDayOfWeek = (day) => {
   let dayOfWeek;
   switch (day) {

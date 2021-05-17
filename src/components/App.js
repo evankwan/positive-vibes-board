@@ -14,9 +14,6 @@ function App() {
   // adding fontawesome icons globally
   library.add(faSun, faCaretDown, faCheckSquare, faSquare, faHeart, faComment);
 
-  // database references
-  const dbRef = firebase.database().ref();
-
   // useState declarations
   const [ messages, setMessages ] = useState([]);
   const [ userNameInput, setUserNameInput ] = useState('');
@@ -42,14 +39,15 @@ function App() {
   const commentFormAnonymousCheck = document.getElementById('commentAnonymous');
   const commentFormMessageInput = document.getElementById('commentMessage');
 
-  // second database reference using the currentboard state
+  // database references
+  const dbRef = firebase.database().ref();
   const currentMessagesRef = firebase.database().ref(`${currentBoard}/messages`);
   const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
 
   // functions
   // handles change of value in the new message form
   const handleChange = ({ target }) => {
-    // depending on the field, set the state accordingly
+    // depending on the field, set the appropriate state accordingly
     if (target.id === "name") {
       setUserNameInput(target.value);
     } else if (target.id === "message") {
@@ -168,11 +166,15 @@ function App() {
 
   // handles expandeding the comment form
   const handleCommentClick = async (key) => {
+    // ensuring we do not mutate state
     let expandedComments = commentFormExpanded;
+    // check if the comment form is expanded
     if (expandedComments.indexOf(key) === -1) {
+      // if comment form is not expanded, close all comment forms and expand the targeted form
       expandedComments = clearArray(expandedComments);
       expandedComments.push(key);
     } else {
+      // if comment form is expanded, close the comment form
       expandedComments = clearArray(expandedComments);
     }
 
@@ -187,6 +189,7 @@ function App() {
     setCommentFormExpanded(expandedComments);
   }
 
+  // handles new comment being submitted on a message
   const handleNewComment = (event, key) => {
     // prevent reloading the page
     event.preventDefault();
@@ -207,6 +210,7 @@ function App() {
     dbRef.child(`${currentBoard}/comments`).push({ name: submittedName, date: submittedDate, message: submittedMessage, likes: 0, associatedPost: key });
   }
 
+  // handles adding a new like onto a comment
   const handleCommentLike = async (key) => {
     // retrieve number of likes from database
     const dbResponse = await currentCommentsRef.child(`${key}`).get(`likes`);
@@ -230,7 +234,7 @@ function App() {
         newState.push({key: key, name: data[key]});
       }
 
-      // change board to new board
+      // change board to new board if user is adding a new board
       if (addingNewBoard) {
         const newBoard = newState[newState.length - 1];
         setCurrentBoard(newBoard.key);
@@ -272,7 +276,7 @@ function App() {
         newState.unshift({ key: key, details: data[key] })
       };
 
-      // set the messages state
+      // set the comments state
       setComments(newState);
     })
   }, [currentBoard, messages, commentFormExpanded])
@@ -291,11 +295,12 @@ function App() {
   })
 
   const messagesList = messages.map((messageObject) => {
+    // pull related comments for each message
     const relatedComments = comments.filter((commentObject) => {
       const { details: { associatedPost } } = commentObject;
       return associatedPost === messageObject.key
     })
-
+    // reverse the order of comments, oldest first
     relatedComments.reverse();
     return (
       <Message 
@@ -314,6 +319,7 @@ function App() {
     )
   })
 
+  // App return
   return (
     <Fragment>
       {/* header component */}

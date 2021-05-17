@@ -1,3 +1,4 @@
+// component for each message board button in the side bar
 const MessageBoardListItem = ({ boardName, clickEvent }) => {
   const { key, name: { topicName } } = boardName;
   return (

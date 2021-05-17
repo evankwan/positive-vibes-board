@@ -1,3 +1,4 @@
+// utility function to format the month name for a date
 const getMonthName = (month) => {
   let monthName;
   switch (month) {
