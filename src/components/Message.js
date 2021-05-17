@@ -21,6 +21,12 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
           tabIndex="0"
           onClick={() => expandCommentForm(key)}
         />
+        <p 
+          className="commentLine"
+          onClick={() => expandCommentForm(key)}
+        >
+          Add Comment
+        </p>
       </div>
       
       <form 
@@ -81,7 +87,12 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
         </div>
       </form>
 
-      <ul>
+      <ul className="commentList">
+        {(postComments.length > 0) ? 
+          <li className="commentHeading">Comments:</li> :
+          ""
+        }
+        
         {
           postComments.map((comment) => {
             return <Comment key={comment.key} commentObject={comment} updateLikes={updateCommentLikes}/>

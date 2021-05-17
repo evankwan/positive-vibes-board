@@ -69,9 +69,18 @@ header {
   display: inline;
   position: absolute;
   left: 35px;
-  bottom: 0;
-  margin: -1px;
+  bottom: -1px;
+  margin: 0;
   line-height: 1.15;
+}
+
+.commentLine {
+  display: inline;
+  position: absolute;
+  left: 140px;
+  bottom: -1px;
+  cursor: pointer;
+  margin: 0;
 }
 
 h1 {
@@ -420,6 +429,11 @@ li {
   border: 2px solid #666;
 }
 
+.commentList {
+  padding: 0;
+  margin: 20px 0 0;
+}
+
 .commentListItem {
   border-radius: 5px;
   border: 2px solid #333;
@@ -427,6 +441,7 @@ li {
   padding: 0px 20px 20px;
   font-size: 2.4rem;
   margin: 20px 0;
+  margin-left: 20px;
   color: #f9f9f9;
 }
 
