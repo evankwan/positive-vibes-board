@@ -29,6 +29,7 @@ function App() {
   const [ comments, setComments ] = useState([]);
   const [ userCommentNameInput, setUserCommentNameInput ] = useState([]);
   const [ userCommentMessageInput, setUserCommentMessageInput ] = useState([]);
+  const [ messagesWihAnonChecked, setMessagesWithAnonChecked ] = useState([]);
 
   // selectors
   const formNameInput = document.getElementById('name');
@@ -92,11 +93,26 @@ function App() {
   }
 
   // handles if anonymous is checked and updates the checkbox icon
-  const handleAnonCheck = () => {
-    if (!anonymousChecked) {
-      setAnonymousChecked(true)
-    } else {
-      setAnonymousChecked(false)
+  const handleAnonCheck = async (comment, key) => {
+    if (comment === true) {
+      // retrieve value of anonChecked from database
+      const dbResponse = await currentMessagesRef.child(`${key}`).get(`anonChecked`);
+      const message = dbResponse.toJSON();
+      const { anonChecked } = message;
+      console.log(anonChecked);
+
+      // update the anonChecked value in the database
+      currentMessagesRef.child(`${key}`).update({ anonChecked: (!anonChecked) });
+
+      // setting new state
+      const newState = [key]
+      setMessagesWithAnonChecked(newState);
+    } else if (!comment) {
+      if (!anonymousChecked) {
+        setAnonymousChecked(true)
+      } else {
+        setAnonymousChecked(false)
+      }
     }
   }
 
@@ -315,6 +331,8 @@ function App() {
         commentNameValue={userCommentNameInput}
         commentMessageValue={userCommentMessageInput}
         commentChange={handleChange}
+        switchCheckbox={handleAnonCheck}
+        isAnonChecked={messagesWihAnonChecked}
       />
     )
   })
