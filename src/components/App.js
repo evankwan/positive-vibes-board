@@ -249,6 +249,7 @@ function App() {
 
   // messages update
   useEffect(() => {
+    const currentMessagesRef = firebase.database().ref(`${currentBoard}/messages`);
     currentMessagesRef.on("value", (snapshot) => {
       // initialize new state
       const newState = [];
