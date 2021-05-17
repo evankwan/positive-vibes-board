@@ -42,6 +42,12 @@ header {
   position: absolute;
   bottom: 0;
   cursor: pointer;
+  padding: 2px;
+  box-sizing: content-box;
+}
+
+.fa-heart:focus {
+  outline: 2px solid #f84a2f;
 }
 
 .fa-comment {
@@ -447,4 +453,10 @@ li {
 
 .commentHead {
   font-style: italic;
+}
+
+.submitButton:focus {
+  background-color: #222;
+  border: 2px solid #666;
+  color: #53edc7;
 }

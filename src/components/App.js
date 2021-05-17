@@ -84,10 +84,7 @@ function App() {
 
   // handles hitting enter when focused on anonymous label/checkbox
   const handleEnterAnonymous = ({ key }) => {
-    console.log('keydown');
-
     if (key === 'Enter') {
-      console.log('check');
       handleAnonCheck();
     }
   }
@@ -335,6 +332,7 @@ function App() {
         commentChange={handleChange}
         switchCheckbox={handleAnonCheck}
         isAnonChecked={messagesWihAnonChecked}
+        enterOnAnon={handleEnterAnonymous}
       />
     )
   })
