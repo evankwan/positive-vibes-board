@@ -29,6 +29,7 @@ function App() {
   const [ comments, setComments ] = useState([]);
   const [ userCommentNameInput, setUserCommentNameInput ] = useState([]);
   const [ userCommentMessageInput, setUserCommentMessageInput ] = useState([]);
+  const [ messagesWihAnonChecked, setMessagesWithAnonChecked ] = useState([]);
 
   // selectors
   const formNameInput = document.getElementById('name');
@@ -83,20 +84,32 @@ function App() {
 
   // handles hitting enter when focused on anonymous label/checkbox
   const handleEnterAnonymous = ({ key }) => {
-    console.log('keydown');
-
     if (key === 'Enter') {
-      console.log('check');
       handleAnonCheck();
     }
   }
 
   // handles if anonymous is checked and updates the checkbox icon
-  const handleAnonCheck = () => {
-    if (!anonymousChecked) {
-      setAnonymousChecked(true)
-    } else {
-      setAnonymousChecked(false)
+  const handleAnonCheck = async (comment, key) => {
+    if (comment === true) {
+      // retrieve value of anonChecked from database
+      const dbResponse = await currentMessagesRef.child(`${key}`).get(`anonChecked`);
+      const message = dbResponse.toJSON();
+      const { anonChecked } = message;
+      console.log(anonChecked);
+
+      // update the anonChecked value in the database
+      currentMessagesRef.child(`${key}`).update({ anonChecked: (!anonChecked) });
+
+      // setting new state
+      const newState = (anonChecked ? [key] : []);
+      setMessagesWithAnonChecked(newState);
+    } else if (!comment) {
+      if (!anonymousChecked) {
+        setAnonymousChecked(true)
+      } else {
+        setAnonymousChecked(false)
+      }
     }
   }
 
@@ -129,6 +142,8 @@ function App() {
     const dbResponse = await dbRef.child(key).get(`topicName`);
     const board = await dbResponse.toJSON();
     const { topicName } = board;
+
+    console.log('change');
 
     // set the board name state for the Latest Messages heading
     setCurrentBoardName(topicName);
@@ -316,6 +331,9 @@ function App() {
         commentNameValue={userCommentNameInput}
         commentMessageValue={userCommentMessageInput}
         commentChange={handleChange}
+        switchCheckbox={handleAnonCheck}
+        isAnonChecked={messagesWihAnonChecked}
+        enterOnAnon={handleEnterAnonymous}
       />
     )
   })

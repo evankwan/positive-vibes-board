@@ -44,7 +44,7 @@ const Form = ({ submitEvent, changeEvent, nameValue, messageValue, expandForm, i
               name="anonymous" 
               id="anonymous" 
               className="anonymousCheckbox" 
-              onClick={switchCheckbox}
+              onClick={() => switchCheckbox(false)}
               tabIndex="-1"
             />
           </div>

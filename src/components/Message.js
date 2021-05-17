@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Comment from './Comment';
 
 // component for each Message on a message board
-const Message = ({ content: { key, details: { name, date, message, likes } }, updateLikes, expandCommentForm, commentFormIsExpanded, addNewComment, postComments, updateCommentLikes, commentNameValue, commentMessageValue, commentChange }) => {
+const Message = ({ content: { key, details: { name, date, message, likes } }, updateLikes, expandCommentForm, commentFormIsExpanded, addNewComment, postComments, updateCommentLikes, commentNameValue, commentMessageValue, commentChange, switchCheckbox, isAnonChecked, enterOnAnon }) => {
   return (
     <li className="messageBoardPost" key={key}>
       <p className="messageHead">Posted by {name} on {date}</p>
@@ -38,28 +38,35 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
           <label htmlFor="name" className="srOnly">Enter your name</label>
           <input
             id="commentName"
-            className={`nameInput commentNameInput`}
+            className={`nameInput commentNameInput ${key === isAnonChecked[0] ? "disabled" : ""}`}
             type="text"
             placeholder="Enter your name"
             autoComplete="off"
             value={commentNameValue}
             onChange={commentChange}
+            disabled={key === isAnonChecked[0]}
           />
 
           <div className="anonymousContainer">
             <label
-              htmlFor="anonymous"
+              htmlFor="commentAnonymous"
               className="anonymousLabel commentAnonymousLabel"
               tabIndex="0"
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  switchCheckbox(true, key);
+                }
+              }}
             >
               Remain Anonymous
           </label>
-            <FontAwesomeIcon icon="square" />
+            <FontAwesomeIcon icon={key === isAnonChecked[0] ? "check-square" : "square"} />
             <input
               type="checkbox"
               name="anonymous"
               id="commentAnonymous"
               className="anonymousCheckbox commentAnonymousCheckbox"
+              onClick={() => switchCheckbox(true, key)}
               tabIndex="-1"
             />
           </div>
