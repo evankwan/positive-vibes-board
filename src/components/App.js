@@ -2,16 +2,17 @@ import '../styles/App.css';
 import { Fragment, useEffect, useState } from 'react';
 import firebase from '../config/firebase';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSun, faCaretDown, faCheckSquare, faSquare, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faSun, faCaretDown, faCheckSquare, faSquare, faHeart, faComment } from '@fortawesome/free-solid-svg-icons';
 import Header from './Header';
 import Form from './Form';
 import getFormattedDate from './getFormattedDate';
+import clearArray from './clearArray';
 import Message from './Message';
 import MessageBoardListItem from './MessageBoardListItem';
 
 function App() {
   // adding fontawesome icons globally
-  library.add(faSun, faCaretDown, faCheckSquare, faSquare, faHeart);
+  library.add(faSun, faCaretDown, faCheckSquare, faSquare, faHeart, faComment);
 
   // database references
   const dbRef = firebase.database().ref();
@@ -27,15 +28,23 @@ function App() {
   const [ expanded, setExpanded ] = useState(false);
   const [ anonymousChecked, setAnonymousChecked ] = useState(false);
   const [ addingNewBoard, setAddingNewBoard ] = useState(false);
+  const [ commentFormExpanded, setCommentFormExpanded ] = useState([]);
+  const [ comments, setComments ] = useState([]);
+  const [ userCommentNameInput, setUserCommentNameInput ] = useState([]);
+  const [ userCommentMessageInput, setUserCommentMessageInput ] = useState([]);
 
   // selectors
   const formNameInput = document.getElementById('name');
   const formAnonymousCheck = document.getElementById('anonymous');
   const formMessageInput = document.getElementById('message');
   const formNewBoard = document.getElementById('boardName');
+  const commentFormNameInput = document.getElementById('commentName');
+  const commentFormAnonymousCheck = document.getElementById('commentAnonymous');
+  const commentFormMessageInput = document.getElementById('commentMessage');
 
   // second database reference using the currentboard state
   const currentMessagesRef = firebase.database().ref(`${currentBoard}/messages`);
+  const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
 
   // functions
   // handles change of value in the new message form
@@ -45,6 +54,10 @@ function App() {
       setUserNameInput(target.value);
     } else if (target.id === "message") {
       setUserMessageInput(target.value);
+    } else if (target.id === "commentName") {
+      setUserCommentNameInput(target.value);
+    } else if (target.id === "commentMessage") {
+      setUserCommentMessageInput(target.value);
     }
   }
 
@@ -153,6 +166,57 @@ function App() {
     formNameInput.focus();
   }
 
+  // handles expandeding the comment form
+  const handleCommentClick = async (key) => {
+    let expandedComments = commentFormExpanded;
+    if (expandedComments.indexOf(key) === -1) {
+      expandedComments = clearArray(expandedComments);
+      expandedComments.push(key);
+    } else {
+      expandedComments = clearArray(expandedComments);
+    }
+
+    const dbResponse = await currentMessagesRef.child(`${key}`).get(`clicks`);
+    const message = dbResponse.toJSON();
+    const { clicks } = message;
+
+    // update the clicks value in the database
+    currentMessagesRef.child(`${key}`).update({ clicks: (clicks + 1) });
+    
+
+    setCommentFormExpanded(expandedComments);
+  }
+
+  const handleNewComment = (event, key) => {
+    // prevent reloading the page
+    event.preventDefault();
+
+    // grab values from the form and format dates
+    const submittedMessage = commentFormMessageInput.value;
+    const submittedName = commentFormAnonymousCheck.checked ? "Anonymous" : commentFormNameInput.value;
+    const newDate = new Date();
+    const submittedDate = getFormattedDate(newDate);
+
+    console.log(commentFormNameInput, commentFormMessageInput);
+
+    // update the userInput states
+    setUserCommentNameInput('');
+    setUserCommentMessageInput('');
+
+    // update the database
+    dbRef.child(`${currentBoard}/comments`).push({ name: submittedName, date: submittedDate, message: submittedMessage, likes: 0, associatedPost: key });
+  }
+
+  const handleCommentLike = async (key) => {
+    // retrieve number of likes from database
+    const dbResponse = await currentCommentsRef.child(`${key}`).get(`likes`);
+    const message = dbResponse.toJSON();
+    const { likes } = message;
+
+    // update the likes value in the database
+    currentCommentsRef.child(`${key}`).update({ likes: (likes + 1) });
+  }
+
   // useEffect hooks
   // boards update
   useEffect(() => {
@@ -177,7 +241,7 @@ function App() {
       // set the boards state 
       setBoards(newState);
     })
-  }, [addingNewBoard, anonymousChecked, expanded])
+  }, [addingNewBoard, anonymousChecked, expanded, commentFormExpanded])
 
   // messages update
   useEffect(() => {
@@ -194,7 +258,24 @@ function App() {
       // set the messages state
       setMessages(newState);
     })
-  }, [currentBoard])
+  }, [currentBoard, commentFormExpanded])
+
+  // comments update
+  useEffect(() => {
+    currentCommentsRef.on("value", (snapshot) => {
+      // initialize new state
+      const newState = [];
+      const data = snapshot.val();
+
+      // loop through data and add to new state IN REVERSE (newest show at top)
+      for (let key in data) {
+        newState.unshift({ key: key, details: data[key] })
+      };
+
+      // set the messages state
+      setComments(newState);
+    })
+  }, [currentBoard, messages, commentFormExpanded])
 
   // page elements
   const boardsList = boards.map((board) => {
@@ -210,11 +291,25 @@ function App() {
   })
 
   const messagesList = messages.map((messageObject) => {
+    const relatedComments = comments.filter((commentObject) => {
+      const { details: { associatedPost } } = commentObject;
+      return associatedPost === messageObject.key
+    })
+
+    relatedComments.reverse();
     return (
       <Message 
         key={messageObject.key} 
         content={messageObject} 
         updateLikes={handleLike}
+        expandCommentForm={handleCommentClick}
+        commentFormIsExpanded={commentFormExpanded}
+        addNewComment={handleNewComment}
+        postComments={relatedComments}
+        updateCommentLikes={handleCommentLike}
+        commentNameValue={userCommentNameInput}
+        commentMessageValue={userCommentMessageInput}
+        commentChange={handleChange}
       />
     )
   })
@@ -282,7 +377,7 @@ function App() {
         {/* wrapper ended */}
       </main>
     </Fragment>
-  );
+  )
 }
 
 export default App;

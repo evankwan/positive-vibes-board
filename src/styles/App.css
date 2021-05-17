@@ -23,6 +23,11 @@ header {
   height: 100px;
 }
 
+.likeContainer {
+  position: relative;
+  height: 30px;
+}
+
 .fa-sun {
   color: #f1e94e;
   font-size: 6rem;
@@ -31,16 +36,37 @@ header {
 
 .fa-heart {
   color: #f84a2f;
-  margin-right: 10px;
+  position: absolute;
+  bottom: 0;
+  cursor: pointer;
+}
+
+.likesCount {
+  display: inline;
+  position: absolute;
+  left: 35px;
+  bottom: 0;
+  margin: -1px;
+  line-height: 1.15;
+}
+
+.fa-comment {
+  position: absolute;
+  left: 100px;
+  bottom: 0;
+  cursor: pointer;
 }
 
 .fa-square {
   font-size: 2rem;
   color: #f9f9f9;
+  cursor: pointer;
 }
+
 .fa-check-square {
   font-size: 2rem;
   color: #f9f9f9;
+  cursor: pointer;
 }
 
 h1 {
@@ -104,6 +130,14 @@ h2 {
   padding-bottom: 20px;
 }
 
+.commentForm {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
 .expandedForm {
   height: auto;
   overflow: visible;
@@ -118,6 +152,10 @@ h2 {
   width: 100%;
   padding: 0;
   margin: 0 0 20px;
+}
+
+.commentFormNameContainer {
+  margin-top: 30px;
 }
 
 .nameInput {
@@ -150,6 +188,11 @@ h2 {
   color: #f9f9f9;
   margin-right: 10px;
   padding: 10px;
+  cursor: pointer;
+}
+
+label.anonymousLabel:hover {
+  color: #53edc7;
 }
 
 .anonymousCheckbox {
@@ -349,6 +392,12 @@ li {
   background-color: #333;
 }
 
+
+.commentNameInput:hover,
+.commentMessageField:hover {
+  background-color: #333;
+}
+
 .submitButton:hover,
 .boardButton:hover {
   color: #53edc7;
@@ -359,3 +408,23 @@ li {
   font-style: italic;
 }
 
+.commentNameInput:hover,
+.commentMessageField:hover,
+.commentSubmitButton:hover {
+  background-color: #222;
+  border: 2px solid #666;
+}
+
+.commentListItem {
+  border-radius: 5px;
+  border: 2px solid #333;
+  background-color: #222;
+  padding: 0px 20px 20px;
+  font-size: 2.4rem;
+  margin: 20px 0;
+  color: #f9f9f9;
+}
+
+.commentHead {
+  font-style: italic;
+}

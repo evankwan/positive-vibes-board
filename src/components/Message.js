@@ -1,6 +1,8 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Comment from './Comment';
 
-const Message = ({ content: { key, details: { name, date, message, likes } }, updateLikes }) => {
+
+const Message = ({ content: { key, details: { name, date, message, likes } }, updateLikes, expandCommentForm, commentFormIsExpanded, addNewComment, postComments, updateCommentLikes, commentNameValue, commentMessageValue, commentChange }) => {
   return (
     <li className="messageBoardPost" key={key}>
       <p className="messageHead">Posted by {name} on {date}</p>
@@ -11,9 +13,81 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
           onClick={() => {
             updateLikes(key);
           }}
+          tabIndex="0"
         />
-        {likes}
+        <p className="likesCount">{likes}</p>
+        <FontAwesomeIcon
+          icon="comment"
+          tabIndex="0"
+          onClick={() => expandCommentForm(key)}
+        />
       </div>
+      
+      <form 
+        action="submit" 
+        className={`commentForm ${commentFormIsExpanded.indexOf(key) > -1 ? "expandedForm" : ""}`}
+        onSubmit={(event) => addNewComment(event, key)}
+      >
+        <div className="formNameContainer commentFormNameContainer">
+          <label htmlFor="name" className="srOnly">Enter your name</label>
+          <input
+            id="commentName"
+            className={`nameInput commentNameInput`}
+            type="text"
+            placeholder="Enter your name"
+            autoComplete="off"
+            value={commentNameValue}
+            onChange={commentChange}
+          />
+
+          <div className="anonymousContainer">
+            <label
+              htmlFor="anonymous"
+              className="anonymousLabel commentAnonymousLabel"
+              tabIndex="0"
+            >
+              Remain Anonymous
+          </label>
+            <FontAwesomeIcon icon="square" />
+            <input
+              type="checkbox"
+              name="anonymous"
+              id="commentAnonymous"
+              className="anonymousCheckbox commentAnonymousCheckbox"
+              tabIndex="-1"
+            />
+          </div>
+        </div>
+
+        <div className="formMessageContainer">
+          <label htmlFor="message" className="srOnly">Enter Message</label>
+          <textarea
+            name="message"
+            id="commentMessage"
+            className="messageField commentMessageField"
+            placeholder="Enter Message"
+            value={commentMessageValue}
+            onChange={commentChange}
+            required
+          ></textarea>
+        </div>
+
+        <div className="formSubmitContainer">
+          <input
+            type="submit"
+            value="Post Your Message"
+            className="submitButton commentSubmitButton"
+          />
+        </div>
+      </form>
+
+      <ul>
+        {
+          postComments.map((comment) => {
+            return <Comment key={comment.key} commentObject={comment} updateLikes={updateCommentLikes}/>
+          })
+        }
+      </ul>
     </li>
   )
 }
