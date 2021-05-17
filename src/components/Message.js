@@ -11,7 +11,12 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
         <FontAwesomeIcon 
           icon="heart" 
           onClick={() => {
-            updateLikes(key);
+            updateLikes(key)
+          }}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              updateLikes(key)
+            }
           }}
           tabIndex="0"
         />
@@ -20,6 +25,11 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
           icon="comment"
           tabIndex="0"
           onClick={() => expandCommentForm(key)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              expandCommentForm(key)
+            }
+          }}
         />
         <p 
           className="commentLine"

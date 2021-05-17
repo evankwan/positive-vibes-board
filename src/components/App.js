@@ -239,6 +239,7 @@ function App() {
   // useEffect hooks
   // boards update
   useEffect(() => {
+    const dbRef = firebase.database().ref();
     dbRef.on("value", (snapshot) => {
       // initialize new state
       const newState = [];
@@ -282,6 +283,7 @@ function App() {
 
   // comments update
   useEffect(() => {
+    const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
     currentCommentsRef.on("value", (snapshot) => {
       // initialize new state
       const newState = [];

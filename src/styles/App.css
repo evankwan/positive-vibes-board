@@ -131,7 +131,7 @@ h2 {
   cursor: pointer;
   line-height: 1;
   margin: 0;
-  padding: 0;
+  padding: 5px;
 }
 
 .formHeadingContainer:hover {
@@ -421,6 +421,15 @@ li {
 .submitButton:hover,
 .boardButton:hover {
   color: #53edc7;
+}
+
+.boardButton:focus {
+  color: #53edc7;
+  border: 2px solid #666;
+}
+
+.formHeading:focus {
+  outline: 2px solid #666;
 }
 
 .messageHead {

@@ -5,7 +5,16 @@ const Form = ({ submitEvent, changeEvent, nameValue, messageValue, expandForm, i
   return (
     <div className="formContainer">
       <div className="formHeadingContainer">
-        <h2 className="formHeading" onClick={expandForm}>
+        <h2 
+          className="formHeading" 
+          onClick={expandForm} 
+          onKeyDown={({ key }) => {
+            if (key === 'Enter') {
+              expandForm();
+            }
+          }} 
+          tabIndex="0"
+        >
           Post To The Board&nbsp;
           <FontAwesomeIcon icon="caret-down" /> 
         </h2>
