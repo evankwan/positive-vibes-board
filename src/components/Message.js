@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Comment from './Comment';
 
 // component for each Message on a message board
-const Message = ({ content: { key, details: { name, date, message, likes } }, updateLikes, expandCommentForm, commentFormIsExpanded, addNewComment, postComments, updateCommentLikes, commentNameValue, commentMessageValue, commentChange, switchCheckbox }) => {
+const Message = ({ content: { key, details: { name, date, message, likes } }, updateLikes, expandCommentForm, commentFormIsExpanded, addNewComment, postComments, updateCommentLikes, commentNameValue, commentMessageValue, commentChange, switchCheckbox, isAnonChecked }) => {
   return (
     <li className="messageBoardPost" key={key}>
       <p className="messageHead">Posted by {name} on {date}</p>
@@ -54,7 +54,7 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
             >
               Remain Anonymous
           </label>
-            <FontAwesomeIcon icon="square" />
+            <FontAwesomeIcon icon={key === isAnonChecked[0] ? "check-square" : "square"} />
             <input
               type="checkbox"
               name="anonymous"

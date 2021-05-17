@@ -105,7 +105,7 @@ function App() {
       currentMessagesRef.child(`${key}`).update({ anonChecked: (!anonChecked) });
 
       // setting new state
-      const newState = [key]
+      const newState = (anonChecked ? [key] : []);
       setMessagesWithAnonChecked(newState);
     } else if (!comment) {
       if (!anonymousChecked) {
@@ -145,6 +145,8 @@ function App() {
     const dbResponse = await dbRef.child(key).get(`topicName`);
     const board = await dbResponse.toJSON();
     const { topicName } = board;
+
+    console.log('change');
 
     // set the board name state for the Latest Messages heading
     setCurrentBoardName(topicName);
