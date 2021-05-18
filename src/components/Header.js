@@ -4,11 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const Header = () => {
   return (
     <header>
-      <FontAwesomeIcon icon="sun" />
-      
-      <h1>
-        Positive Vibes Board
-      </h1>
+      <div className="wrapper headerContainer">
+        <div className="logoContainer">
+          <FontAwesomeIcon icon="sun" />
+        </div>
+        <div className="titleContainer">
+          <h1>
+            Positive Vibes Board
+          </h1>
+        </div>
+      </div>
     </header>
   )
 }
