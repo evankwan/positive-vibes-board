@@ -25,7 +25,7 @@ const MessageBoardList = ({ addNewBoard, newBoardValue, updateNewBoardValue, boa
       </div>
 
       {/* list of boards */}
-      <ul>
+      <ul id="boardsList">
         {boardsList}
       </ul>
     </aside>

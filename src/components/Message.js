@@ -5,16 +5,16 @@ import Comment from './Comment';
 import Form from './Form';
 
 // component for each Message on a message board
-const Message = ({ content: { key, details: { name, date, message, likes } }, updateLikes, formSubmitEventHandler, postComments, updateCommentLikes, switchCheckbox, messagesRef, isAnonChecked }) => {
+const Message = ({ content: { key, details: { name, date, message, likes } }, updateLikes, formSubmitEventHandler, postComments, updateCommentLikes, switchCheckbox, messagesRef, isAnonChecked, isCommentFormExpanded, setIsCommentFormExpanded }) => {
   // set states
-  const [ commentFormExpanded, setCommentFormExpanded ] = useState([]);
+  
   const [ userCommentMessageInput, setUserCommentMessageInput ] = useState([]);
   const [ userCommentNameInput, setUserCommentNameInput ] = useState([]);
 
   // handles expanding the comment form by logging clicks in the database
   const handleCommentClick = async (key) => {
     // ensuring we do not mutate state
-    let expandedComments = commentFormExpanded;
+    let expandedComments = isCommentFormExpanded;
     // check if the comment form is expanded
     if (expandedComments.indexOf(key) === -1) {
       // if comment form is not expanded, close all comment forms and expand the targeted form
@@ -33,7 +33,7 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
     // update the clicks value in the database
     messagesRef.child(`${key}`).update({ clicks: (clicks + 1) });
 
-    setCommentFormExpanded(expandedComments);
+    setIsCommentFormExpanded(expandedComments);
   }
 
   return (
@@ -76,7 +76,7 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
         ifComment={true}
         commentKey={key}
         addNewComment={formSubmitEventHandler}
-        expandCommentForm={commentFormExpanded}
+        expandCommentForm={isCommentFormExpanded}
         commentNameInputChange={setUserCommentNameInput}
         commentMessageInputChange={setUserCommentMessageInput}
         commentAnonChecked={isAnonChecked[0]}

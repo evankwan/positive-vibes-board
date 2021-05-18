@@ -21,9 +21,9 @@ function App() {
   const [ currentBoardName, setCurrentBoardName] = useState('Public');
   const [ newBoardInput, setNewBoardInput ] = useState('');
   const [ anonymousChecked, setAnonymousChecked ] = useState(false);
-  const [ addingNewBoard, setAddingNewBoard ] = useState(false);
   const [ messagesWithAnonChecked, setMessagesWithAnonChecked ] = useState([]);
   const [ comments, setComments ] = useState([]);
+  const [ commentFormExpanded, setCommentFormExpanded ] = useState([]);
 
   // selectors
   const formNameInput = document.getElementById('name');
@@ -91,6 +91,7 @@ function App() {
 
     // set the board name state for the Latest Messages heading
     setCurrentBoardName(topicName);
+    console.log('done');
   }
 
   // handles change in value of new board input
@@ -108,16 +109,6 @@ function App() {
 
     // update the userInput state
     setNewBoardInput('');
-
-    // if the form is not expanded, expand
-    // if (!expanded) {
-    //   setExpanded(true)
-    // }
-
-    // move focus to message form
-    formNameInput.focus();
-
-    setAddingNewBoard(true);
 
     // update the database
     dbRef.push({ topicName: submittedBoardName, messages: {} });
@@ -190,30 +181,23 @@ function App() {
       // set the boards state 
       setBoards(newState);
     })
-  }, [addingNewBoard])
 
-  // messages update
-  useEffect(() => {
-    const currentMessagesRef = firebase.database().ref(`${currentBoard}/messages`);
-    currentMessagesRef.on("value", (snapshot) => {
+    const currentBoardRef = firebase.database().ref(`${currentBoard}`);
+    currentBoardRef.on("value", (snapshot) => {
       // initialize new state
       const newState = [];
-      const data = snapshot.val();
-      
-      // loop through data and add to new state IN REVERSE (newest show at top)
-      for (let key in data) {
-        newState.unshift({key: key, details: data[key]})
-      }
+      const boardData = snapshot.val();
+      const { messages } = boardData;
 
-      setAddingNewBoard(false);
+      // loop through data and add to new state IN REVERSE (newest show at top)
+      for (let key in messages) {
+        newState.unshift({ key: key, details: messages[key] })
+      }
 
       // set the messages state
       setMessages(newState);
     })
-  }, [currentBoard])
 
-  // comments update
-  useEffect(() => {
     const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
     currentCommentsRef.on("value", (snapshot) => {
       // initialize new state
@@ -228,7 +212,7 @@ function App() {
       // set the comments state
       setComments(newState);
     })
-  }, [currentBoard, messages])
+  }, [currentBoard, commentFormExpanded])
 
   // page elements
   const boardsList = boards.map((board) => {
@@ -262,6 +246,8 @@ function App() {
         switchCheckbox={handleAnonCheck}
         messagesRef={currentMessagesRef}
         isAnonChecked={messagesWithAnonChecked}
+        isCommentFormExpanded={commentFormExpanded}
+        setIsCommentFormExpanded={setCommentFormExpanded}
       />
     )
   })
