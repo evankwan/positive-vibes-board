@@ -1,8 +1,41 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
+import clearArray from '../utilities/clearArray'
 import Comment from './Comment';
+import Form from './Form';
 
 // component for each Message on a message board
-const Message = ({ content: { key, details: { name, date, message, likes } }, updateLikes, expandCommentForm, commentFormIsExpanded, addNewComment, postComments, updateCommentLikes, commentNameValue, commentMessageValue, commentChange, switchCheckbox, isAnonChecked, enterOnAnon }) => {
+const Message = ({ content: { key, details: { name, date, message, likes } }, updateLikes, formSubmitEventHandler, postComments, updateCommentLikes, switchCheckbox, messagesRef, isAnonChecked }) => {
+  // set states
+  const [ commentFormExpanded, setCommentFormExpanded ] = useState([]);
+  const [ userCommentMessageInput, setUserCommentMessageInput ] = useState([]);
+  const [ userCommentNameInput, setUserCommentNameInput ] = useState([]);
+
+  // handles expanding the comment form by logging clicks in the database
+  const handleCommentClick = async (key) => {
+    // ensuring we do not mutate state
+    let expandedComments = commentFormExpanded;
+    // check if the comment form is expanded
+    if (expandedComments.indexOf(key) === -1) {
+      // if comment form is not expanded, close all comment forms and expand the targeted form
+      expandedComments = clearArray(expandedComments);
+      expandedComments.push(key);
+      
+    } else {
+      // if comment form is expanded, close the comment form
+      expandedComments = clearArray(expandedComments);
+    }
+
+    const dbResponse = await messagesRef.child(`${key}`).get(`clicks`);
+    const message = dbResponse.toJSON();
+    const { clicks } = message;
+
+    // update the clicks value in the database
+    messagesRef.child(`${key}`).update({ clicks: (clicks + 1) });
+
+    setCommentFormExpanded(expandedComments);
+  }
+
   return (
     <li className="messageBoardPost" key={key}>
       <p className="messageHead">Posted by {name} on {date}</p>
@@ -24,85 +57,33 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
         <FontAwesomeIcon
           icon="comment"
           tabIndex="0"
-          onClick={() => expandCommentForm(key)}
+          onClick={() => handleCommentClick(key)}
           onKeyDown={(event) => {
             if (event.key === 'Enter') {
-              expandCommentForm(key)
+              handleCommentClick(key)
             }
           }}
         />
         <p 
           className="commentLine"
-          onClick={() => expandCommentForm(key)}
+          onClick={() => handleCommentClick(key)}
         >
           Add Comment
         </p>
       </div>
       
-      <form 
-        action="submit" 
-        className={`commentForm ${commentFormIsExpanded.indexOf(key) > -1 ? "expandedForm" : ""}`}
-        onSubmit={(event) => addNewComment(event, key)}
-      >
-        <div className="formNameContainer commentFormNameContainer">
-          <label htmlFor="name" className="srOnly">Enter your name</label>
-          <input
-            id="commentName"
-            className={`nameInput commentNameInput ${key === isAnonChecked[0] ? "disabled" : ""}`}
-            type="text"
-            placeholder="Enter your name"
-            autoComplete="off"
-            value={commentNameValue}
-            onChange={commentChange}
-            disabled={key === isAnonChecked[0]}
-          />
-
-          <div className="anonymousContainer">
-            <label
-              htmlFor="commentAnonymous"
-              className="anonymousLabel commentAnonymousLabel"
-              tabIndex="0"
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  switchCheckbox(true, key);
-                }
-              }}
-            >
-              Remain Anonymous
-          </label>
-            <FontAwesomeIcon icon={key === isAnonChecked[0] ? "check-square" : "square"} />
-            <input
-              type="checkbox"
-              name="anonymous"
-              id="commentAnonymous"
-              className="anonymousCheckbox commentAnonymousCheckbox"
-              onClick={() => switchCheckbox(true, key)}
-              tabIndex="-1"
-            />
-          </div>
-        </div>
-
-        <div className="formMessageContainer">
-          <label htmlFor="message" className="srOnly">Enter Message</label>
-          <textarea
-            name="message"
-            id="commentMessage"
-            className="messageField commentMessageField"
-            placeholder="Enter Message"
-            value={commentMessageValue}
-            onChange={commentChange}
-            required
-          ></textarea>
-        </div>
-
-        <div className="formSubmitContainer">
-          <input
-            type="submit"
-            value="Post Your Message"
-            className="submitButton commentSubmitButton"
-          />
-        </div>
-      </form>
+      <Form
+        ifComment={true}
+        commentKey={key}
+        addNewComment={formSubmitEventHandler}
+        expandCommentForm={commentFormExpanded}
+        commentNameInputChange={setUserCommentNameInput}
+        commentMessageInputChange={setUserCommentMessageInput}
+        commentAnonChecked={isAnonChecked[0]}
+        commentNameInput={userCommentNameInput}
+        commentMessageInput={userCommentMessageInput}
+        keydownCommentCheckbox={switchCheckbox}
+      />
 
       <ul className="commentList">
         {(postComments.length > 0) ? 
