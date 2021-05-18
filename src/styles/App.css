@@ -50,6 +50,10 @@ header {
   outline: 2px solid #f84a2f;
 }
 
+.fa-heart:active {
+  outline: 2px solid #f9f9f9;
+}
+
 .fa-comment {
   position: absolute;
   left: 100px;
