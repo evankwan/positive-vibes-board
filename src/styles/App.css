@@ -50,11 +50,21 @@ header {
   outline: 2px solid #f84a2f;
 }
 
+.fa-heart:active {
+  outline: 2px solid #f9f9f9;
+}
+
 .fa-comment {
   position: absolute;
   left: 100px;
   bottom: 0;
   cursor: pointer;
+  padding: 2px;
+  box-sizing: content-box;
+}
+
+.fa-comment:focus {
+  outline: 2px solid #f9f9f9;
 }
 
 .fa-square {
@@ -125,6 +135,8 @@ h2 {
   justify-content: center;
   margin-bottom: 10px;
 }
+
+
 
 .formHeading {
   color: #53edc7;
