@@ -2,14 +2,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 
 // component for the new message form
-const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComment, commentKey, addNewComment, commentMessageInputChange, commentNameInputChange, commentAnonChecked, commentNameInput, commentMessageInput, keydownCommentCheckbox, expandCommentForm = [] }) => {
+const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComment = false, commentKey, addNewComment, commentMessageInputChange, commentNameInputChange, commentAnonChecked, commentNameInput, commentMessageInput, keydownCommentCheckbox, expandCommentForm = [] }) => {
   // states
   const [ expanded, setExpanded ] = useState(false);
   const [ userMessageInput, setUserMessageInput ] = useState('');
   const [ userNameInput, setUserNameInput ] = useState('');
 
   // handles expanding and contracting of the new message form
-  console.log('rendering form', ifComment, expandCommentForm)
   const handleFormClick = () => {
     if (!expanded) {
       setExpanded(true)
@@ -89,24 +88,20 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
               ? "commentName" 
               : "name"
             }
-            className={`nameInput 
-              ${isChecked 
-                ? "disabled" 
-                : ""
-              } 
-              ${ifComment 
-                ? "commentNameInput" 
-                : ""
-              } 
-              ${commentKey === commentAnonChecked 
-                ? "disabled" 
-                : ""}
-            `} 
+            className={
+              ifComment 
+                ? (commentKey === commentAnonChecked)
+                  ? "nameInput commentNameInput disabled"
+                  : "nameInput commentNameInput" 
+                : (isChecked)
+                  ? "nameInput disabled"
+                  : "nameInput"
+            } 
             type="text" 
             onChange={ifComment 
               ? ({ target: { value } }) => commentNameInputChange(value)
               : ({ target: { value } }) => setUserNameInput(value)
-              } 
+            } 
             placeholder="Enter your name" 
             value={ifComment 
               ? commentNameInput 
@@ -125,7 +120,10 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
 
           <div className="anonymousContainer">
             <label 
-              htmlFor={ifComment ? "commentAnonymous" : "anonymous"}
+              htmlFor={ifComment 
+                ? "commentAnonymous" 
+                : "anonymous"
+              }
               className={`anonymousLabel ${ifComment 
                 ? "commentAnonymousLabel" 
                 : "" }
@@ -142,7 +140,14 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
             >
               Remain Anonymous
             </label>
-            <FontAwesomeIcon icon={(isChecked || commentKey === commentAnonChecked) ? "check-square" : "square"} /> 
+            {ifComment 
+              ? (commentKey === commentAnonChecked)
+                ? <FontAwesomeIcon icon="check-square" />
+                : <FontAwesomeIcon icon="square" /> 
+              : (isChecked)
+                ? <FontAwesomeIcon icon="check-square" />
+                : <FontAwesomeIcon icon="square" />
+            }
             <input 
               type="checkbox" 
               name="anonymous" 
@@ -155,8 +160,9 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
                 : ""
               }`}
               onClick={ifComment 
-                ? () => switchCheckbox(true, commentKey)
-                : () => switchCheckbox(false)}
+                ? () => keydownCommentCheckbox(true, commentKey)
+                : () => switchCheckbox(false)
+              }
               tabIndex="-1"
             />
           </div>

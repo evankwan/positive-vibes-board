@@ -274,35 +274,12 @@ function App() {
       <main>
         <div className="wrapper mainContainer">
           {/* side bar with list of message boards */}
-          <aside className="boardsListContainer">
-            <h3 className="boardsListHeading">Message Boards</h3>
-            <div className="boardFormContainer">
-              {/* new form message board */}
-              <form action="submit" className="newBoardForm" onSubmit={handleNewBoardSubmit}>
-                <label htmlFor="name" className="srOnly">Add A New Message Board</label>
-                <input
-                  id="boardName"
-                  className="boardNameInput"
-                  type="text"
-                  placeholder="Add New Message Board"
-                  autoComplete="off"
-                  value={newBoardInput}
-                  onChange={handleNewBoardChange}
-                  required
-                />
-                <input
-                  type="submit"
-                  value="Add New Board"
-                  className="submitButton boardSubmit"
-                />
-              </form>
-            </div>
-
-            {/* list of boards */}
-            <ul>
-              {boardsList}
-            </ul>
-          </aside>
+          <MessageBoardList 
+            addNewBoard={handleNewBoardSubmit}
+            newBoardValue={newBoardInput}
+            updateNewBoardValue={handleNewBoardChange}
+            boardsList={boardsList}
+          />
 
           {/* new message form */}
           <div className="messageBoard">
