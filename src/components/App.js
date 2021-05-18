@@ -30,9 +30,6 @@ function App() {
   const formAnonymousCheck = document.getElementById('anonymous');
   const formMessageInput = document.getElementById('message');
   const formNewBoard = document.getElementById('boardName');
-  const commentFormNameInput = document.getElementById('commentName');
-  const commentFormAnonymousCheck = document.getElementById('commentAnonymous');
-  const commentFormMessageInput = document.getElementById('commentMessage');
 
   // database references
   const dbRef = firebase.database().ref();
@@ -55,7 +52,7 @@ function App() {
     const submittedDate = getFormattedDate(newDate);
 
     // update the database
-    currentMessagesRef.push({message: submittedMessage, name: submittedName, date: submittedDate, likes: 0, clicks: 0, anonChecked: false});
+    currentMessagesRef.push({message: submittedMessage, name: submittedName, date: submittedDate, likes: 0, clicks: 0 });
 
     // set focus on form again
     formNameInput.focus();
@@ -115,17 +112,15 @@ function App() {
   }
 
   const handleAnonCheck = async (comment, key) => {
+    console.log('check');
     if (comment === true) {
-      // retrieve value of anonChecked from database
-      const dbResponse = await currentMessagesRef.child(`${key}`).get(`anonChecked`);
-      const message = dbResponse.toJSON();
-      const { anonChecked } = message;
-
-      // update the anonChecked value in the database
-      currentMessagesRef.child(`${key}`).update({ anonChecked: (!anonChecked) });
-
       // setting new state
-      const newState = (anonChecked ? [key] : []);
+      const newState = (
+        messagesWithAnonChecked.indexOf(key) === -1 
+        ? [key] 
+        : []
+      );
+      console.log('new state',  newState);
       setMessagesWithAnonChecked(newState);
     } else if (!comment) {
       if (!anonymousChecked) {
@@ -137,17 +132,19 @@ function App() {
   }
 
   // handles new comment being submitted on a message
-  const handleNewComment = (event, key) => {
+  const handleNewComment = (event, key, nameInputId, anonCheckId, messageInputId, ) => {
     // prevent reloading the page
     event.preventDefault();
 
+    console.log(document.getElementById(nameInputId).value);
+    console.log(document.getElementById(anonCheckId).checked);
+    console.log(document.getElementById(messageInputId).value);
+
     // grab values from the form and format dates
-    const submittedMessage = commentFormMessageInput.value;
-    const submittedName = commentFormAnonymousCheck.checked ? "Anonymous" : commentFormNameInput.value;
+    const submittedMessage = document.getElementById(messageInputId).value;
+    const submittedName = document.getElementById(anonCheckId).checked ? "Anonymous" : document.getElementById(nameInputId).value;
     const newDate = new Date();
     const submittedDate = getFormattedDate(newDate);
-
-    console.log(commentFormNameInput, commentFormMessageInput);
 
     // update the database
     dbRef.child(`${currentBoard}/comments`).push({ name: submittedName, date: submittedDate, message: submittedMessage, likes: 0, associatedPost: key });

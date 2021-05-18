@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 
 // component for the new message form
-const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComment = false, commentKey, addNewComment, commentMessageInputChange, commentNameInputChange, commentAnonChecked, commentNameInput, commentMessageInput, keydownCommentCheckbox, expandCommentForm = [] }) => {
+const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComment = false, commentKey, addNewComment, commentMessageInputChange, commentNameInputChange, commentAnonChecked, commentNameInput, commentMessageInput, commentAnonCheck, expandCommentForm = [] }) => {
   // states
   const [ expanded, setExpanded ] = useState(false);
   const [ userMessageInput, setUserMessageInput ] = useState('');
@@ -16,6 +16,10 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
       setExpanded(false)
     }
   }
+
+  const commentNameId = `commentName-${commentKey}`
+  const commentAnonId = `commentAnonymous-${commentKey}`
+  const commentMessageId = `commentMessage-${commentKey}`
 
   return (
     <div className={ifComment 
@@ -44,22 +48,26 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
       <form 
         action="submit"
         className={`
-          ${ifComment
+          ${
+            ifComment
             ? "commentForm"
             : "messageForm"
           } 
-          ${expanded 
+          ${
+            expanded 
             ? "expandedForm" 
             : ""
           }
-          ${expandCommentForm.indexOf(commentKey) > -1
+          ${
+            expandCommentForm.indexOf(commentKey) > -1
             ? "expandedForm"
             : ""
           }`
         }
-        onSubmit={ifComment 
+        onSubmit={
+          ifComment 
           ? (event) => {
-            addNewComment(event, commentKey);
+            addNewComment(event, commentKey, commentNameId, commentAnonId, commentMessageId);
             // update the userInput states
             commentNameInputChange('');
             commentMessageInputChange('');
@@ -72,47 +80,54 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
           }
         }
       >
-        <div className={`formNameContainer ${ifComment 
+        <div className={`formNameContainer ${
+          ifComment 
           ? "commentFormNameContainer" 
           : ""}
         `}>
-          <label htmlFor={ifComment 
-            ? "commentName" 
+          <label htmlFor={
+            ifComment 
+            ? commentNameId 
             : "name"
           } 
           className="srOnly">
             Enter your name
           </label>
           <input 
-            id={ifComment 
-              ? "commentName" 
+            id={
+              ifComment 
+              ? commentNameId 
               : "name"
             }
             className={
               ifComment 
-                ? (commentKey === commentAnonChecked)
-                  ? "nameInput commentNameInput disabled"
-                  : "nameInput commentNameInput" 
-                : (isChecked)
-                  ? "nameInput disabled"
-                  : "nameInput"
+              ? commentKey === commentAnonChecked
+                ? "nameInput commentNameInput disabled"
+                : "nameInput commentNameInput" 
+              : isChecked
+                ? "nameInput disabled"
+                : "nameInput"
             } 
             type="text" 
-            onChange={ifComment 
+            onChange={
+              ifComment 
               ? ({ target: { value } }) => commentNameInputChange(value)
               : ({ target: { value } }) => setUserNameInput(value)
             } 
             placeholder="Enter your name" 
-            value={ifComment 
+            value={
+              ifComment 
               ? commentNameInput 
               : userNameInput
             } 
             autoComplete="off"
-            disabled={ifComment 
+            disabled={
+              ifComment 
               ? commentKey === commentAnonChecked 
               : isChecked
             }
-            required={ifComment 
+            required={
+              ifComment 
               ? !commentAnonChecked 
               : !isChecked
             }
@@ -120,19 +135,22 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
 
           <div className="anonymousContainer">
             <label 
-              htmlFor={ifComment 
-                ? "commentAnonymous" 
+              htmlFor={
+                ifComment 
+                ? commentAnonId 
                 : "anonymous"
               }
-              className={`anonymousLabel ${ifComment 
+              className={`anonymousLabel ${
+                ifComment 
                 ? "commentAnonymousLabel" 
                 : "" }
               `} 
               tabIndex="0"
-              onKeyDown={ifComment 
+              onKeyDown={
+                ifComment 
                 ? (event) => {
                     if (event.key === 'Enter') {
-                      keydownCommentCheckbox(true, commentKey);
+                      commentAnonCheck(true, commentKey);
                     }
                   }
                 : keydownCheckbox
@@ -140,27 +158,31 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
             >
               Remain Anonymous
             </label>
-            {ifComment 
-              ? (commentKey === commentAnonChecked)
-                ? <FontAwesomeIcon icon="check-square" />
-                : <FontAwesomeIcon icon="square" /> 
-              : (isChecked)
-                ? <FontAwesomeIcon icon="check-square" />
-                : <FontAwesomeIcon icon="square" />
+            {
+            ifComment 
+            ? commentKey === commentAnonChecked
+              ? <FontAwesomeIcon icon="check-square" />
+              : <FontAwesomeIcon icon="square" /> 
+            : isChecked
+              ? <FontAwesomeIcon icon="check-square" />
+              : <FontAwesomeIcon icon="square" />
             }
             <input 
               type="checkbox" 
               name="anonymous" 
-              id={ifComment 
-                ? "commentAnonymous" 
+              id={
+                ifComment 
+                ? commentAnonId 
                 : "anonymous"
               } 
-              className={`anonymousCheckbox ${ifComment 
+              className={`anonymousCheckbox ${
+                ifComment 
                 ? "commentAnonymousCheckbox"
                 : ""
               }`}
-              onClick={ifComment 
-                ? () => keydownCommentCheckbox(true, commentKey)
+              onClick={
+                ifComment 
+                ? () => commentAnonCheck(true, commentKey)
                 : () => switchCheckbox(false)
               }
               tabIndex="-1"
@@ -169,8 +191,10 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
         </div>
         
         <div className="formMessageContainer">
-          <label htmlFor={ifComment 
-              ? "commentMessage"
+          <label 
+            htmlFor={
+              ifComment 
+              ? commentMessageId
               : "message"
             } 
             className="srOnly"
@@ -179,19 +203,23 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
           </label>
           <textarea 
             name="message" 
-            id={ifComment 
-              ? "commentMessage" 
+            id={
+              ifComment 
+              ? commentMessageId 
               : "message"
             } 
-            className={`messageField ${ifComment
+            className={`messageField ${
+              ifComment
               ? "commentMessageField"
               : "" 
             }`} 
-            onChange={ifComment 
+            onChange={
+              ifComment 
               ? ({ target: { value } }) => commentMessageInputChange(value)
               : ({ target: { value } }) => setUserMessageInput(value)
             } 
-            value={ifComment 
+            value={
+              ifComment 
               ? commentMessageInput
               : userMessageInput
             }
@@ -204,7 +232,8 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
           <input 
             type="submit" 
             value="Post Your Message" 
-            className={`submitButton ${ifComment 
+            className={`submitButton ${
+              ifComment 
               ? "commentSubmitButton" 
               : ""
             }`}

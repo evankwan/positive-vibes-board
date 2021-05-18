@@ -7,7 +7,7 @@ import Form from './Form';
 // component for each Message on a message board
 const Message = ({ content: { key, details: { name, date, message, likes } }, updateLikes, formSubmitEventHandler, postComments, updateCommentLikes, switchCheckbox, messagesRef, isAnonChecked, isCommentFormExpanded, setIsCommentFormExpanded }) => {
   // set states
-  
+  const [ expandedComments, setExpandedComments ] = useState(false);
   const [ userCommentMessageInput, setUserCommentMessageInput ] = useState([]);
   const [ userCommentNameInput, setUserCommentNameInput ] = useState([]);
 
@@ -34,6 +34,10 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
     messagesRef.child(`${key}`).update({ clicks: (clicks + 1) });
 
     setIsCommentFormExpanded(expandedComments);
+  }
+
+  const handleClick = () => {
+    setExpandedComments(!expandedComments);
   }
 
   return (
@@ -82,18 +86,23 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
         commentAnonChecked={isAnonChecked[0]}
         commentNameInput={userCommentNameInput}
         commentMessageInput={userCommentMessageInput}
-        keydownCommentCheckbox={switchCheckbox}
+        commentAnonCheck={switchCheckbox}
       />
 
       <ul className="commentList">
-        {(postComments.length > 0) ? 
-          <li className="commentHeading">Comments:</li> :
-          ""
+        {
+          postComments.length > 0 
+          ? <li className="commentHeading" onClick={handleClick}>Comments:
+              <span className="mobileOnly">
+                &nbsp;
+                <FontAwesomeIcon icon="caret-down" className="mobileOnly" />
+              </span>
+            </li> 
+          : ""
         }
-        
         {
           postComments.map((comment) => {
-            return <Comment key={comment.key} commentObject={comment} updateLikes={updateCommentLikes}/>
+            return <Comment key={comment.key} commentObject={comment} updateLikes={updateCommentLikes} isExpanded={expandedComments}/>
           })
         }
       </ul>

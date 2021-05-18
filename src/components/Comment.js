@@ -1,9 +1,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // component for each Comment on a message
-const Comment = ({ commentObject: { details: { date, likes, message, name }, key }, updateLikes }) => {
+const Comment = ({ commentObject: { details: { date, likes, message, name }, key }, updateLikes, isExpanded }) => {
   return (
-    <li className="commentListItem">
+    <li className={`commentListItem ${
+          isExpanded
+          ? ""
+          : "hiddenMobile"
+        }`
+      }
+    >
       <p className="commentHead">Posted by {name} on {date}</p>
       <p className="messageText">&#187; {message}</p>
 
