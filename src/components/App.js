@@ -96,7 +96,6 @@ function App() {
       const dbResponse = await currentMessagesRef.child(`${key}`).get(`anonChecked`);
       const message = dbResponse.toJSON();
       const { anonChecked } = message;
-      console.log(anonChecked);
 
       // update the anonChecked value in the database
       currentMessagesRef.child(`${key}`).update({ anonChecked: (!anonChecked) });
@@ -143,8 +142,6 @@ function App() {
     const board = await dbResponse.toJSON();
     const { topicName } = board;
 
-    console.log('change');
-
     // set the board name state for the Latest Messages heading
     setCurrentBoardName(topicName);
   }
@@ -155,7 +152,7 @@ function App() {
   }
 
   // handles submit of new board form
-  const handleNewBoardSubmit = async (event) => {
+  const handleNewBoardSubmit = (event) => {
     // prevent page from reloading
     event.preventDefault();
 
@@ -165,18 +162,18 @@ function App() {
     // update the userInput state
     setNewBoardInput('');
 
-    // update the database
-    dbRef.push({ topicName: submittedBoardName, messages: {} });
-
-    setAddingNewBoard(true);
-
     // if the form is not expanded, expand
-    if (!expanded) {
-      await setExpanded(true)
-    }
+    // if (!expanded) {
+    //   setExpanded(true)
+    // }
 
     // move focus to message form
     formNameInput.focus();
+
+    setAddingNewBoard(true);
+
+    // update the database
+    dbRef.push({ topicName: submittedBoardName, messages: {} });
   }
 
   // handles expandeding the comment form
@@ -255,13 +252,13 @@ function App() {
         const newBoard = newState[newState.length - 1];
         setCurrentBoard(newBoard.key);
         setCurrentBoardName(newBoard.name.topicName);
-        setAddingNewBoard(false);
+        console.log('switch');
       }
-
+      
       // set the boards state 
       setBoards(newState);
     })
-  }, [addingNewBoard, anonymousChecked, expanded, commentFormExpanded])
+  }, [])
 
   // messages update
   useEffect(() => {
@@ -274,12 +271,14 @@ function App() {
       // loop through data and add to new state IN REVERSE (newest show at top)
       for (let key in data) {
         newState.unshift({key: key, details: data[key]})
-      };
+      }
+
+      setAddingNewBoard(false);
 
       // set the messages state
       setMessages(newState);
     })
-  }, [currentBoard, commentFormExpanded])
+  }, [currentBoard])
 
   // comments update
   useEffect(() => {
@@ -297,7 +296,7 @@ function App() {
       // set the comments state
       setComments(newState);
     })
-  }, [currentBoard, messages, commentFormExpanded])
+  }, [currentBoard, messages])
 
   // page elements
   const boardsList = boards.map((board) => {
