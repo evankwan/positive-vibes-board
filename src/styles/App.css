@@ -42,6 +42,16 @@ header {
   position: absolute;
   bottom: 0;
   cursor: pointer;
+  padding: 2px;
+  box-sizing: content-box;
+}
+
+.fa-heart:focus {
+  outline: 2px solid #f84a2f;
+}
+
+.fa-heart:active {
+  outline: 2px solid #f9f9f9;
 }
 
 .fa-comment {
@@ -49,6 +59,12 @@ header {
   left: 100px;
   bottom: 0;
   cursor: pointer;
+  padding: 2px;
+  box-sizing: content-box;
+}
+
+.fa-comment:focus {
+  outline: 2px solid #f9f9f9;
 }
 
 .fa-square {
@@ -69,9 +85,18 @@ header {
   display: inline;
   position: absolute;
   left: 35px;
-  bottom: 0;
-  margin: -1px;
+  bottom: -1px;
+  margin: 0;
   line-height: 1.15;
+}
+
+.commentLine {
+  display: inline;
+  position: absolute;
+  left: 140px;
+  bottom: -1px;
+  cursor: pointer;
+  margin: 0;
 }
 
 h1 {
@@ -111,12 +136,14 @@ h2 {
   margin-bottom: 10px;
 }
 
+
+
 .formHeading {
   color: #53edc7;
   cursor: pointer;
   line-height: 1;
   margin: 0;
-  padding: 0;
+  padding: 5px;
 }
 
 .formHeadingContainer:hover {
@@ -408,6 +435,15 @@ li {
   color: #53edc7;
 }
 
+.boardButton:focus {
+  color: #53edc7;
+  border: 2px solid #666;
+}
+
+.formHeading:focus {
+  outline: 2px solid #666;
+}
+
 .messageHead {
   font-weight: 700;
   font-style: italic;
@@ -420,6 +456,11 @@ li {
   border: 2px solid #666;
 }
 
+.commentList {
+  padding: 0;
+  margin: 20px 0 0;
+}
+
 .commentListItem {
   border-radius: 5px;
   border: 2px solid #333;
@@ -427,9 +468,16 @@ li {
   padding: 0px 20px 20px;
   font-size: 2.4rem;
   margin: 20px 0;
+  margin-left: 20px;
   color: #f9f9f9;
 }
 
 .commentHead {
   font-style: italic;
+}
+
+.submitButton:focus {
+  background-color: #222;
+  border: 2px solid #666;
+  color: #53edc7;
 }

@@ -13,6 +13,11 @@ const Comment = ({ commentObject: { details: { date, likes, message, name }, key
           onClick={() => {
             updateLikes(key);
           }}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              updateLikes(key)
+            }
+          }}
           tabIndex="0"
         />
         <p className="likesCount">{likes}</p>
