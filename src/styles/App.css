@@ -189,6 +189,7 @@ ul {
   border-radius: 20px;
 }
 
+.boardButton,
 .boardButton:focus,
 .commentMessageField:hover,
 .commentNameInput:hover,
@@ -197,7 +198,7 @@ ul {
   border: 2px solid #666;
 }
 
-.boardButton,
+
 .boardNameInput,
 .commentListItem,
 .messageBoardPost,
@@ -291,6 +292,16 @@ header {
   background-color: #333;
 }
 
+.boardButton,
+.submitButton {
+  background-color: #efefefef;
+}
+
+.boardButton:hover,
+.submitButton:hover {
+  background-color: #f1e94e;
+}
+
 /* colors */
 .fa-sun,
 h1 {
@@ -298,7 +309,6 @@ h1 {
 }
 
 .anonymousLabel,
-.boardButton,
 .boardsListHeading,
 .boardNameInput,
 .commentListItem,
@@ -313,13 +323,14 @@ h2,
   color: #f9f9f9;
 }
 
-.boardButton:focus,
-.boardButton:hover,
 .formHeading,
-label.anonymousLabel:hover,
-.submitButton:focus,
-.submitButton:hover {
+label.anonymousLabel:hover {
   color: #53edc7;
+}
+
+.boardButton,
+.submitButton {
+  color: #333;
 }
 
 /* typography */
