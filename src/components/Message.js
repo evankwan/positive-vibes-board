@@ -52,14 +52,12 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
   // handles if the remain anonymous checkbox is checked in message and comment forms
   const handleCommentAnonCheck = (key) => {
     const oldState = [...messagesWithAnonChecked]
-    console.log('oldState', oldState);
     // setting new state
     const newState = (
       oldState.indexOf(key) === -1
         ? [key]
         : []
     );
-    console.log('newState', newState);
     setMessagesWithAnonChecked(newState);
   }
 
