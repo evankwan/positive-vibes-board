@@ -3,6 +3,7 @@ import { faSun, faCaretDown, faCheckSquare, faSquare, faHeart, faComment } from 
 import { Fragment, useEffect, useState } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import firebase from '../config/firebase';
+import Footer from './Footer'
 import Form from './Form';
 import Header from './Header';
 import getFormattedDate from '../utilities/getFormattedDate';
@@ -288,6 +289,7 @@ function App() {
         </div>
         {/* wrapper ended */}
       </main>
+      <Footer />
     </Fragment>
   )
 }

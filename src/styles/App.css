@@ -15,6 +15,7 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 /* flex */
 .anonymousContainer,
 .boardButton,
+.footer,
 .formContainer,
 .formHeadingContainer,
 .formMessageContainer,
@@ -30,6 +31,7 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 
 .anonymousContainer,
 .boardButton,
+.footer,
 .formContainer,
 .formHeadingContainer,
 .formMessageContainer,
@@ -43,6 +45,7 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 
 .anonymousContainer,
 .boardButton,
+.footer,
 .formContainer,
 .formHeadingContainer,
 .formSubmitContainer,
@@ -108,6 +111,7 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 }
 
 /* sizing */
+.footer,
 .nameInput,
 .submitButton {
   height: 50px;
@@ -115,6 +119,7 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 
 .boardButton,
 .boardFormContainer,
+.footer,
 .formMessageContainer,
 .formNameContaine,
 .formSubmitContainer,
@@ -270,6 +275,7 @@ li,
 .commentMessageField:hover,
 .commentNameInput:hover,
 .commentSubmitButton:hover,
+.footer,
 .messageBoardPost,
 .messageField,
 .nameInput,
@@ -316,6 +322,7 @@ label.anonymousLabel:hover {
 .boardsListHeading,
 .boardNameInput,
 .commentListItem,
+.createdAtJuno,
 .fa-check-square,
 .fa-square,
 .formHeading,
@@ -351,6 +358,7 @@ h3 {
 }
 
 .boardButton,
+.createdAtJuno,
 .fa-check-square,
 .fa-square,
 .submitButton {
@@ -397,6 +405,7 @@ h3,
 .anonymousLabel,
 .boardButton,
 .commentLine,
+.createdAtJuno,
 .fa-check-square,
 .fa-comment,
 .fa-heart,
@@ -479,6 +488,9 @@ li {
 /* END OF SEMANTIC TAG STYLES */
 
 /* CLASSES */
+.main {
+  padding-bottom: 20px;
+}
 .headerContainer {
   height: 150px;
 }
@@ -635,6 +647,15 @@ li {
 
 .commentListItem:hover {
   border: 2px solid #666;
+}
+
+.createdAtJuno {
+  padding: 20px 50px;
+  text-decoration: none;
+}
+
+.createdAtJuno:hover {
+  color: #ea593e;
 }
 
 @media (max-width: 1024px) {
