@@ -192,7 +192,7 @@ function App() {
       // set the messages state
       setMessages(newState);
     })
-  }, [currentBoard, commentFormExpanded])
+  }, [currentBoard])
 
   useEffect(() => {
     // comments update
