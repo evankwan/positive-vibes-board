@@ -11,7 +11,7 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
   const [ userCommentMessageInput, setUserCommentMessageInput ] = useState([]);
   const [ userCommentNameInput, setUserCommentNameInput ] = useState([]);
 
-  // handles expanding the comment form by logging clicks in the database
+  // handles expanding the comment form
   const handleCommentClick = async (key) => {
     // ensuring we do not mutate state
     let expandedComments = isCommentFormExpanded;
@@ -26,6 +26,7 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
       expandedComments = clearArray(expandedComments);
     }
 
+    // get clicks value from database
     const dbResponse = await messagesRef.child(`${key}`).get(`clicks`);
     const message = dbResponse.toJSON();
     const { clicks } = message;
@@ -33,13 +34,16 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
     // update the clicks value in the database
     messagesRef.child(`${key}`).update({ clicks: (clicks + 1) });
 
+    // set the expanded comment state
     setIsCommentFormExpanded(expandedComments);
   }
 
+  // opens the comments section
   const openComments = () => {
     setExpandedComments(true);
   }
 
+  // toggles the comments section
   const handleClick = () => {
     setExpandedComments(!expandedComments);
   }
@@ -80,6 +84,7 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
         </p>
       </div>
       
+      {/* comment form */}
       <Form
         ifComment={true}
         commentKey={key}
@@ -100,7 +105,7 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
           ? <li className="commentHeading" onClick={handleClick}>Comments:
               <span className="mobileOnly">
                 &nbsp;
-                <FontAwesomeIcon icon="caret-down" className="mobileOnly" />
+                <FontAwesomeIcon icon="caret-down" />
               </span>
             </li> 
           : "No Comments"

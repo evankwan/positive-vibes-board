@@ -9,6 +9,419 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 
 .srOnly { position: absolute; width: 1px; height: 1px; margin: -1px; border: 0; padding: 0; white-space: nowrap; clip-path: inset(100%); clip: rect(0 0 0 0); overflow: hidden;}
 
+/* GLOBAL STYLES */
+/* flex */
+.anonymousContainer,
+.boardButton,
+.formContainer,
+.formHeadingContainer,
+.formMessageContainer,
+.formNameContainer,
+.formSubmitContainer,
+.headerContainer,
+.logoContainer,
+.mainContainer,
+.messageForm,
+.newBoardForm {
+  display: flex;
+}
+
+.anonymousContainer,
+.boardButton,
+.formContainer,
+.formHeadingContainer,
+.formMessageContainer,
+.formNameContainer,
+.formSubmitContainer,
+.headerContainer,
+.logoContainer,
+.newBoardForm {
+  align-items: center;
+}
+
+.anonymousContainer,
+.boardButton,
+.formContainer,
+.formHeadingContainer,
+.formSubmitContainer,
+.headerContainer,
+.logoContainer,
+.newBoardForm {
+  justify-content: center;
+}
+
+.formMessageContainer,
+.formNameContainer,
+.mainContainer {
+  justify-content: space-between;
+}
+
+.formContainer,
+.formHeadingContainer,
+.messageForm,
+.newBoardForm {
+  flex-direction: column;
+}
+
+.boardsListContainer,
+.logoContainer {
+  flex-basis: 25%;
+}
+
+.messageBoard,
+.titleContainer {
+  flex-basis: 75%;
+}
+
+/* positioning */
+.anonymousCheckbox,
+.boardsListHeading,
+.headerContainer,
+.likeContainer {
+  position: relative;
+}
+
+.boardsListHeading::after,
+.commentLine,
+.fa-comment,
+.fa-heart,
+.likesCount {
+  position: absolute;
+}
+
+.fa-comment,
+.fa-heart {
+  bottom: 0;
+}
+
+.commentLine,
+.likesCount {
+  bottom: -1px;
+}
+
+/* display */
+.commentLine,
+.likesCount {
+  display: inline;
+}
+
+/* sizing */
+.nameInput,
+.submitButton {
+  height: 50px;
+}
+
+.boardButton,
+.boardFormContainer,
+.formMessageContainer,
+.formNameContaine,
+.formSubmitContainer,
+.messageField,
+.newBoardForm {
+  width: 100%;
+}
+
+.anonymousContainer,
+.nameInput,
+.submitButton {
+  width: 50%;
+}
+
+.boardNameInput,
+.boardsListHeading,
+.boardSubmit {
+  width: 90%;
+}
+
+.boardNameInput,
+.boardSubmit {
+  min-width: 200px;
+}
+
+/* box model */
+.fa-comment,
+.fa-heart {
+  box-sizing: content-box;
+}
+
+.commentList,
+.formNameContainer,
+h1,
+li,
+.messagesBoardContainer,
+ul {
+  padding: 0;
+}
+
+.fa-comment,
+.fa-heart {
+  padding: 2px;
+}
+
+.formHeading,
+.messageField,
+.nameInput {
+  padding: 5px;
+}
+
+.anonymousLabel,
+.anonymousLabel:active,
+.anonymousLabel:focus,
+.boardButton,
+.boardFormContainer {
+  padding: 10px;
+}
+
+.boardFormContainer,
+.boardsListHeading,
+.messageForm {
+  padding-bottom: 20px;
+}
+
+.boardNameInput,
+.messageField,
+.nameInput {
+  border-radius: 5px;
+}
+
+.boardsListContainer,
+.formHeadingContainer {
+  border-radius: 20px;
+}
+
+.boardButton:focus,
+.commentMessageField:hover,
+.commentNameInput:hover,
+.commentSubmitButton:hover,
+.submitButton:focus {
+  border: 2px solid #666;
+}
+
+.boardButton,
+.boardNameInput,
+.commentListItem,
+.messageBoardPost,
+.messageField,
+.nameInput,
+.submitButton {
+  border: 2px solid #333;
+}
+
+.boardsListContainer,
+.commentLine,
+.formHeading,
+h1,
+li,
+.likesCount,
+.messagesBoardContainer,
+.nameInput {
+  margin: 0;
+}
+
+.anonymousContainer,
+.formSubmitContainer {
+  margin: 5px;
+}
+
+.boardButton,
+.commentHead {
+  margin: 10px 0;
+}
+
+.commentListItem,
+.messageBoardPost {
+  margin: 20px 0;
+}
+
+.boardsListContainer,
+.formContainer {
+  margin-top: 20px;
+}
+
+.boardNameInput,
+.formHeadingContainer {
+  margin-bottom: 10px;
+}
+
+.boardFormContainer,
+.formMessageContainer {
+  margin-bottom: 20px;
+}
+
+.fa-comment:active,
+.fa-comment:focus,
+.fa-heart:active,  
+.fa-heart:focus {
+  outline-offset: 2px;
+}
+
+.fa-comment:active,
+.fa-comment:focus {
+  outline: 2px solid #f9f9f9;
+}
+
+/* backgrounds */
+.boardButton,
+.boardNameInput,
+.commentListItem,
+.commentMessageField:hover,
+.commentNameInput:hover,
+.commentSubmitButton:hover,
+.messageBoardPost,
+.messageField,
+.nameInput,
+.submitButton,
+.submitButton:focus {
+  background-color: #222;
+}
+
+.anonymousCheckbox,
+header {
+  background-color: #232323;
+}
+
+.boardButton:hover,
+.commentMessageField:hover,
+.commentNameInput:hover,
+.formHeadingContainer:hover,
+.messageBoardPost:hover,
+.messageField:hover,
+.nameInput:hover,
+.submitButton:hover {
+  background-color: #333;
+}
+
+/* colors */
+.fa-sun,
+h1 {
+  color: #f1e94e;
+}
+
+.anonymousLabel,
+.boardButton,
+.boardsListHeading,
+.boardNameInput,
+.commentListItem,
+.fa-check-square,
+.fa-square,
+h2,
+.messageBoardPost,
+.messageField,
+.messagesListHeading,
+.nameInput,
+.submitButton {
+  color: #f9f9f9;
+}
+
+.boardButton:focus,
+.boardButton:hover,
+.formHeading,
+label.anonymousLabel:hover,
+.submitButton:focus,
+.submitButton:hover {
+  color: #53edc7;
+}
+
+/* typography */
+.commentListItem,
+.messageBoardPost,
+.messageText {
+  font-size: 2.4rem;
+}
+
+.boardButton,
+.fa-check-square,
+.fa-square,
+.submitButton {
+  font-size: 2rem;
+}
+
+.anonymousLabel,
+.boardNameInput {
+  font-size: 1.8rem;
+}
+
+.commentHead,
+.messageField,
+.messageHead,
+.nameInput {
+  font-size: 1.6rem;
+}
+
+.commentHead,
+h2,
+h3,
+.messageHead,
+.messageText {
+  font-weight: 400;
+}
+
+.boardButton,
+.submitButton {
+  font-weight: 700;
+}
+
+.boardsListHeading,
+.formHeading,
+h1,
+h2,
+h3,
+.messagesListHeading {
+  text-align: center;
+}
+
+/* misc */
+.anonymousLabel,
+.boardButton,
+.commentLine,
+.fa-check-square,
+.fa-comment,
+.fa-heart,
+.fa-square,
+.formHeading,
+.submitButton {
+  cursor: pointer;
+}
+
+/* END OF GLOBAL STYLES */
+
+/* UTILITY CLASSES */
+.wrapper {
+  width: 85%;
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+/* initial styling before expandedForm */
+.commentForm,
+.messageForm {
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: opacity 1s ease;
+  visibility: hidden;
+}
+
+/* expands commentForm and messageForm */
+.expandedForm {
+  height: auto;
+  overflow: visible;
+  opacity: 1;
+  visibility: visible;
+}
+
+.disabled {
+  color: #444;
+  border: 2px solid #222;
+}
+
+.mobileOnly {
+  display: none;
+}
+
+/* END OF UTILITY CLASSES */
+
+/* SEMANTIC TAG STYLES */
 html {
   font-size: 62.5%;
 }
@@ -19,397 +432,49 @@ body {
 }
 
 header {
-  background-color: #232323;
   border-bottom: 1px solid #333;
 }
 
-.headerContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 150px;
-  position: relative;
-}
-
-.logoContainer {
-  flex-basis: 25%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.titleContainer {
-  flex-basis: 75%;
-}
-
-.likeContainer {
-  position: relative;
-  height: 30px;
-}
-
-/* fontawesome styles */
-/* these classes are auto-generated by fontawesome, which is why they do not follow camelCase */
-.fa-sun {
-  color: #f1e94e;
-  font-size: 8rem;
-}
-
-.fa-heart {
-  color: #f84a2f;
-  position: absolute;
-  bottom: 0;
-  cursor: pointer;
-  padding: 2px;
-  box-sizing: content-box;
-}
-
-.fa-heart:focus,
-.fa-heart:active {
-  outline: 2px solid #f84a2f;
-  outline-offset: 5px;
-}
-
-.fa-comment {
-  position: absolute;
-  left: 100px;
-  bottom: 0;
-  cursor: pointer;
-  padding: 2px;
-  box-sizing: content-box;
-}
-
-.fa-comment:focus
-.fa-comment:active {
-  outline: 2px solid #f9f9f9;
-  outline-offset: 5px;
-}
-
-.fa-square {
-  font-size: 2rem;
-  color: #f9f9f9;
-  cursor: pointer;
-}
-
-.fa-check-square {
-  font-size: 2rem;
-  color: #f9f9f9;
-  cursor: pointer;
-}
-
-/* end of font awesome styles */
-
-.likesCount {
-  display: inline;
-  position: absolute;
-  left: 35px;
-  bottom: -1px;
-  margin: 0;
-  line-height: 1.15;
-}
-
-.commentLine {
-  display: inline;
-  position: absolute;
-  left: 140px;
-  bottom: -1px;
-  cursor: pointer;
-  margin: 0;
-}
-
 h1 {
-  color: #f1e94e;
-  margin: 0;
-  padding: 0;
-  text-align: center;
   font-size: 6rem;
   font-weight: 500;
 }
 
 h2 {
-  color: #f9f9f9;
   font-size: 3rem;
-  font-weight: 400;
-  text-align: center;
-}
-
-h3 {
-  font-weight: 400;
-  text-align: center;
-}
-
-.wrapper {
-  width: 85%;
-  max-width: 1250px;
-  margin: 0 auto;
-}
-
-.formContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  margin-top: 20px;
-}
-
-.formHeadingContainer {
-  padding: 15px 25px 18px;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.formHeading {
-  color: #53edc7;
-  cursor: pointer;
-  line-height: 1;
-  margin: 0;
-  padding: 5px;
-  text-align: center;
-}
-
-.formHeadingContainer:hover {
-  background-color: #333;
-}
-
-.messageForm {
-  display: flex;
-  flex-direction: column;
-  width: 70%;
-  height: 0;
-  overflow: hidden;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 1s ease;
-  padding-bottom: 20px;
-}
-
-.commentForm {
-  height: 0;
-  overflow: hidden;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 1s ease;
-}
-
-.expandedForm {
-  height: auto;
-  overflow: visible;
-  opacity: 1;
-  visibility: visible;
-}
-
-.formNameContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 0;
-  margin: 0 0 20px;
-}
-
-.commentFormNameContainer {
-  margin-top: 30px;
-}
-
-.nameInput {
-  width: 50%;
-  height: 50px;
-  border-radius: 5px;
-  border: 2px solid #333;
-  margin: 0;
-  font-size: 1.6rem;
-  padding: 5px;
-  color: #f9f9f9;
-  background-color: #222;
-}
-
-.disabled {
-  color: #444;
-  border: 2px solid #222;
-}
-
-.anonymousContainer {
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 5px;
-}
-
-.anonymousLabel {
-  font-size: 1.8rem;
-  color: #f9f9f9;
-  margin-right: 10px;
-  padding: 10px;
-  cursor: pointer;
-}
-
-label.anonymousLabel:hover {
-  color: #53edc7;
-}
-
-.anonymousCheckbox {
-  height: 20px;
-  width: 20px;
-  background-color: #232323;
-  position: relative;
-  left: -20px;
-  z-index: 20;
-  opacity: 0;
-}
-
-.anonymousLabel:active,
-.anonymousLabel:focus {
-  outline: 3px solid;
-  padding: 10px;
-}
-
-.formMessageContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.messageField {
-  height: 100px;
-  width: 100%;
-  border: 2px solid #333;
-  border-radius: 5px;
-  font-size: 1.6rem;
-  padding: 5px;
-  resize: none;
-  color: #f9f9f9;
-  background-color: #222;
-}
-
-.formSubmitContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin: 5px;
-}
-
-.submitButton {
-  width: 50%;
-  height: 50px;
-  font-size: 2rem;
-  font-weight: bold;
-  background-color: #222;
-  border: 2px solid #333;
-  color: #f9f9f9;
-  cursor: pointer;
-}
-
-.mainContainer {
-  display: flex;
-  justify-content: space-between;
-}
-
-.boardsListContainer {
-  flex-basis: 25%;
-  margin: 0;
-  margin-top: 20px;
-  padding: 20px 10px;
-  height: min-content;
-  border-radius: 20px;
-}
-
-.messageBoard {
-  flex-basis: 75%;
-}
-
-.boardFormContainer {
-  width: 100%;
-  padding: 10px;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #333;
-  transition: opacity 1s ease;
-}
-
-.newBoardForm {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.boardNameInput {
-  width: 90%;
-  min-width: 200px;
-  color: #f9f9f9;
-  background-color: #222;
-  border: 2px solid #333;
-  font-size: 1.8rem;
-  padding: 15px;
-  border-radius: 5px;
-  background-color: #222;
-  margin-bottom: 10px;
-}
-
-.boardSubmit {
-  width: 90%;
-  min-width: 200px;
-}
-
-.boardButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  color: #f9f9f9;
-  background-color: #222;
-  border: 2px solid #333;
-  width: 100%;
-  cursor: pointer;
-  margin: 10px 0;
-  font-size: 2rem;
-  font-weight: bold;
 }
 
 ul {
   margin: 20px;
-  padding: 0;
 }
 
 li {
   list-style: none;
-  margin: 0;
-  padding: 0;
 }
 
-.boardsListHeading,
-.messagesListHeading {
-  text-align: center;
-  color: #f9f9f9;
+/* END OF SEMANTIC TAG STYLES */
+
+/* CLASSES */
+.headerContainer {
+  height: 150px;
 }
 
-.messagesListHeading {
-  margin-top: 0;
+.boardsListContainer {
+  padding: 20px 10px;
+  height: min-content;
 }
 
 .boardsListHeading {
   font-size: 3.2rem;
-  padding-bottom: 20px;
   border-bottom: 2px solid #666;
   margin: 0 auto 40px;
-  width: 90%;
-  position: relative;
   z-index: 10;
 }
 
 .boardsListHeading::after {
   content: '';
-  position: absolute;
-  width: 0;
   height: 0;
+  width: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-top: 20px solid #666;
@@ -418,104 +483,125 @@ li {
   z-index: -10;
 }
 
-.messagesListHeading {
-  font-size: 4rem;
+.boardFormContainer {
+  border-bottom: 2px solid #333;
+  transition: opacity 1s ease;
 }
 
-.messagesBoardContainer {
-  flex-basis: 80%;
-  margin: 0;
-  padding: 0;
+.boardNameInput {
+  padding: 15px;
 }
 
-.messageBoardPost {
-  border-radius: 20px 20px 20px 0;
-  border: 2px solid #333;
-  background-color: #222;
-  padding: 20px;
-  font-size: 2.4rem;
-  margin: 20px 0;
-  color: #f9f9f9;
+.formHeadingContainer {
+  padding: 15px 25px 18px;
 }
 
-.mobileOnly {
-  display: none;
-}
-
-.boardButton:hover,
-.submitButton:hover,
-.messageBoardPost:hover,
-.nameInput:hover,
-.messageField:hover {
-  background-color: #333;
-}
-
-
-.commentNameInput:hover,
-.commentMessageField:hover {
-  background-color: #333;
-}
-
-.submitButton:hover,
-.boardButton:hover {
-  color: #53edc7;
-}
-
-.boardButton:focus {
-  color: #53edc7;
-  border: 2px solid #666;
+.formHeading {
+  line-height: 1;
 }
 
 .formHeading:focus {
   outline: 2px solid #666;
 }
 
+.formNameContainer {
+  margin: 0 0 20px;
+}
+
+.messageForm {
+  width: 70%;
+}
+
+.anonymousLabel {
+  margin-right: 10px;
+}
+
+.anonymousCheckbox {
+  height: 20px;
+  width: 20px;
+  left: -20px;
+  z-index: 20;
+  opacity: 0;
+}
+
+.anonymousLabel:active,
+.anonymousLabel:focus {
+  outline: 3px solid;
+}
+
+.messageField {
+  height: 100px;
+  resize: none;
+}
+
+.messagesBoardContainer {
+  flex-basis: 80%;
+}
+
+.messagesListHeading {
+  font-size: 4rem;
+  margin-top: 0;
+}
+
+.messageBoardPost {
+  border-radius: 20px 20px 20px 0;
+  padding: 20px;
+}
+
 .messageHead {
-  font-weight: 400;
-  font-size: 1.6rem;
   margin: 5px 0;
 }
 
 .messageText {
-  font-size: 2.4rem;
-  font-weight: 400;
   letter-spacing: .3px;
   line-height: 1.5;
 }
 
-.commentNameInput:hover,
-.commentMessageField:hover,
-.commentSubmitButton:hover {
-  background-color: #222;
-  border: 2px solid #666;
+.likeContainer {
+  height: 30px;
+}
+
+.likesCount {
+  left: 35px;
+  line-height: 1.15;
+}
+
+.commentLine {
+  left: 140px;
+}
+
+/* fontawesome styles */
+/* these classes are auto-generated by fontawesome, which is why they do not follow camelCase */
+.fa-sun {
+  font-size: 8rem;
+}
+
+.fa-heart {
+  color: #f84a2f;
+}
+
+.fa-heart:focus,
+.fa-heart:active {
+  outline: 2px solid #f84a2f;
+}
+
+.fa-comment {
+  left: 100px;
+}
+/* end of font awesome styles */
+
+.commentFormNameContainer {
+  margin-top: 30px;
 }
 
 .commentList {
-  padding: 0;
   margin: 20px 0 0;
 }
 
 .commentListItem {
   border-radius: 10px 10px 10px 0;
-  border: 2px solid #333;
-  background-color: #222;
   padding: 10px 20px 20px;
-  font-size: 2.4rem;
-  margin: 20px 0;
   margin-left: 20px;
-  color: #f9f9f9;
-}
-
-.commentHead {
-  font-weight: 400;
-  font-size: 1.6rem;
-  margin: 10px 0;
-}
-
-.submitButton:focus {
-  background-color: #222;
-  border: 2px solid #666;
-  color: #53edc7;
 }
 
 @media (max-width: 1024px) {
@@ -608,6 +694,13 @@ li {
   .wrapper {
     width: 95%;
   }
+
+  .anonymousContainer,
+  .nameInput,
+  .submitButton {
+    width: 100%;
+  }
+  
   .headerContainer {
     height: 80px;
   }
@@ -618,7 +711,6 @@ li {
 
   h1 {
     font-size: 3rem;
-    text-align: center;
   }
 
   .messageForm {
@@ -629,7 +721,9 @@ li {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .boardsListHeading {
+  .boardsListHeading,
+  .formHeading,
+  .messagesListHeading {
     font-size: 2.6rem;
   }
 
@@ -641,23 +735,12 @@ li {
     padding: 10px 25px;
   }
 
-  .formHeading {
-    font-size: 2.6rem;
-  }
-
   .messagesBoardContainer > ul {
     margin: 10px;
   }
 
-  .messagesListHeading {
-    font-size: 2.6rem;
-  }
-
+  .commentHeading,
   .messageText {
-    font-size: 2rem;
-  }
-
-  .commentHeading {
     font-size: 2rem;
   }
 
@@ -666,17 +749,8 @@ li {
     margin-bottom: 20px;
   }
 
-  .nameInput {
-    width: 100%;
-  }
-
   .anonymousContainer {
-    width: 100%;
     margin-top: 20px;
-  }
-
-  .submitButton {
-    width: 100%;
   }
 
   .likeContainer {

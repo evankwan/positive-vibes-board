@@ -1,11 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
 
 const MessageBoardList = ({ addNewBoard, newBoardValue, updateNewBoardValue, boardsList, handleClick, isMobileExpanded }) => {
   
-
-  
-
   return (
     <aside className="boardsListContainer">
       <h3 
@@ -13,8 +9,10 @@ const MessageBoardList = ({ addNewBoard, newBoardValue, updateNewBoardValue, boa
         onClick={handleClick}
       >
         Message Boards
-        <span className="mobileOnly">&nbsp;</span>
-        <FontAwesomeIcon icon="caret-down" className="mobileOnly"/> 
+        <span className="mobileOnly">
+          &nbsp;
+          <FontAwesomeIcon icon="caret-down" />
+        </span>
       </h3>
       <div className={`boardFormContainer 
           ${
