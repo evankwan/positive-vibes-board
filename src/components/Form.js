@@ -103,7 +103,7 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
             }
             className={
               ifComment 
-              ? commentKey === commentAnonChecked
+              ? commentKey === commentAnonChecked[0]
                 ? "nameInput commentNameInput disabled"
                 : "nameInput commentNameInput" 
               : isChecked
@@ -125,12 +125,12 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
             autoComplete="off"
             disabled={
               ifComment 
-              ? commentKey === commentAnonChecked 
+              ? commentKey === commentAnonChecked[0] 
               : isChecked
             }
             required={
               ifComment 
-              ? !commentAnonChecked 
+              ? commentKey !== commentAnonChecked[0] 
               : !isChecked
             }
           />
@@ -152,7 +152,7 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
                 ifComment 
                 ? (event) => {
                     if (event.key === 'Enter') {
-                      commentAnonCheck(true, commentKey);
+                      commentAnonCheck(commentKey);
                     }
                   }
                 : keydownCheckbox
@@ -162,7 +162,7 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
             </label>
             {
             ifComment 
-            ? commentKey === commentAnonChecked
+            ? commentAnonChecked.indexOf(commentKey) !== -1
               ? <FontAwesomeIcon icon="check-square" />
               : <FontAwesomeIcon icon="square" /> 
             : isChecked
@@ -182,12 +182,17 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
                 ? "commentAnonymousCheckbox"
                 : ""
               }`}
-              onClick={
+              onChange={
                 ifComment 
-                ? () => commentAnonCheck(true, commentKey)
-                : () => switchCheckbox(false)
+                ? () => commentAnonCheck(commentKey)
+                : switchCheckbox
               }
               tabIndex="-1"
+              checked={
+                ifComment
+                ? commentKey === commentAnonChecked[0]
+                : isChecked
+              }
             />
           </div>
         </div>

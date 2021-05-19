@@ -22,12 +22,10 @@ function App() {
   const [ currentBoard, setCurrentBoard ] = useState(`-M_qnb3Aah2p0BDqMmgq`);
   const [ currentBoardName, setCurrentBoardName] = useState('Public');
   const [ messages, setMessages ] = useState([]);
-  const [ messagesWithAnonChecked, setMessagesWithAnonChecked ] = useState([]);
   const [ mobileExpanded, setMobileExpanded ] = useState(false);
   const [ newBoardInput, setNewBoardInput ] = useState('');
 
   // selectors
-  const formAnonymousCheck = document.getElementById('anonymous');
   const formMessageInput = document.getElementById('message');
   const formNameInput = document.getElementById('name');
   const formNewBoard = document.getElementById('boardName');
@@ -44,22 +42,11 @@ function App() {
   }
 
   // handles if the remain anonymous checkbox is checked in message and comment forms
-  const handleAnonCheck = async (comment, key) => {
-    if (comment === true) {
-      // setting new state
-      const newState = (
-        messagesWithAnonChecked.indexOf(key) === -1
-          ? [key]
-          : []
-      );
-      setMessagesWithAnonChecked(newState);
-    } else if (!comment) {
-      if (!anonymousChecked) {
-        setAnonymousChecked(true)
-      } else {
-        setAnonymousChecked(false)
-      }
-    }
+  const handleAnonCheck = () => {
+    const checked = anonymousChecked;
+    console.log('form old state: ', checked);
+    setAnonymousChecked(!checked);
+    console.log('form new state: ', !checked);
   }
 
   // handles the changing of message boards
@@ -152,7 +139,7 @@ function App() {
     
     // grab values from the form and format dates
     const submittedName = 
-      formAnonymousCheck.checked 
+      anonymousChecked
       ? "Anonymous" 
       : formNameInput.value;
     const submittedMessage = formMessageInput.value;
@@ -246,9 +233,9 @@ function App() {
         formSubmitEventHandler={handleNewComment}
         postComments={relatedComments}
         updateCommentLikes={handleCommentLike}
-        switchCheckbox={handleAnonCheck}
+        // switchCheckbox={handleAnonCheck}
         messagesRef={currentMessagesRef}
-        isAnonChecked={messagesWithAnonChecked}
+        // isAnonChecked={messagesWithAnonChecked}
         isCommentFormExpanded={commentFormExpanded}
         setIsCommentFormExpanded={setCommentFormExpanded}
       />
