@@ -173,7 +173,7 @@ function App() {
       // set the boards state 
       setBoards(newState);
     })
-  }, [currentBoard, mobileExpanded])
+  }, [])
 
   useEffect(() => {
     // messages update
@@ -210,7 +210,7 @@ function App() {
       // set the comments state
       setComments(newState);
     })
-  }, [currentBoard, commentFormExpanded])
+  }, [currentBoard])
 
   // page elements
   // boards
