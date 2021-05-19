@@ -46,9 +46,7 @@ function App() {
   // handles if the remain anonymous checkbox is checked in message and comment forms
   const handleAnonCheck = () => {
     const checked = anonymousChecked;
-    console.log('form old state: ', checked);
     setAnonymousChecked(!checked);
-    console.log('form new state: ', !checked);
   }
 
   // handles the changing of message boards
@@ -120,8 +118,6 @@ function App() {
   const handleNewComment = (event, key, nameInputId, anonCheckId, messageInputId) => {
     // prevent reloading the page
     event.preventDefault();
-
-    console.log(anonCheckId);
 
     // grab values from the form and format dates
     const submittedName = 
