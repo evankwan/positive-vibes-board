@@ -9,8 +9,10 @@ const MessageBoardList = ({ addNewBoard, newBoardValue, updateNewBoardValue, boa
         onClick={handleClick}
       >
         Message Boards
-        <span className="mobileOnly">&nbsp;</span>
-        <FontAwesomeIcon icon="caret-down" className="mobileOnly"/> 
+        <span className="mobileOnly">
+          &nbsp;
+          <FontAwesomeIcon icon="caret-down" />
+        </span>
       </h3>
       <div className={`boardFormContainer 
           ${

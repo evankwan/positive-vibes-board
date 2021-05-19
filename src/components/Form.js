@@ -22,7 +22,8 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
   const commentMessageId = `commentMessage-${commentKey}`
 
   return (
-    <div className={ifComment 
+    <div className={
+      ifComment 
       ? "" 
       : "formContainer"
     }> 

@@ -214,7 +214,7 @@ function App() {
       // set the comments state
       setComments(newState);
     })
-  }, [currentBoard, commentFormExpanded])
+  }, [commentFormExpanded, currentBoard, mobileExpanded, newBoardInput])
 
   // page elements
   const boardsList = boards.map((board) => {
