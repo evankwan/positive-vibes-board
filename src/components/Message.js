@@ -10,6 +10,7 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
   const [ expandedComments, setExpandedComments ] = useState(false);
   const [ userCommentMessageInput, setUserCommentMessageInput ] = useState([]);
   const [ userCommentNameInput, setUserCommentNameInput ] = useState([]);
+  const [messagesWithAnonChecked, setMessagesWithAnonChecked] = useState([]);
 
   // handles expanding the comment form
   const handleCommentClick = async (key) => {
@@ -46,6 +47,20 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
   // toggles the comments section
   const handleClick = () => {
     setExpandedComments(!expandedComments);
+  }
+
+  // handles if the remain anonymous checkbox is checked in message and comment forms
+  const handleCommentAnonCheck = (key) => {
+    const oldState = [...messagesWithAnonChecked]
+    console.log('oldState', oldState);
+    // setting new state
+    const newState = (
+      oldState.indexOf(key) === -1
+        ? [key]
+        : []
+    );
+    console.log('newState', newState);
+    setMessagesWithAnonChecked(newState);
   }
 
   return (
@@ -92,10 +107,10 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
         expandCommentForm={isCommentFormExpanded}
         commentNameInputChange={setUserCommentNameInput}
         commentMessageInputChange={setUserCommentMessageInput}
-        commentAnonChecked={isAnonChecked[0]}
+        commentAnonChecked={messagesWithAnonChecked}
         commentNameInput={userCommentNameInput}
         commentMessageInput={userCommentMessageInput}
-        commentAnonCheck={switchCheckbox}
+        commentAnonCheck={handleCommentAnonCheck}
         expandComments={openComments}
       />
 
