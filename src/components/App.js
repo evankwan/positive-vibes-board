@@ -15,115 +15,43 @@ function App() {
   library.add(faSun, faCaretDown, faCheckSquare, faSquare, faHeart, faComment);
 
   // useState declarations
-  const [ messages, setMessages ] = useState([]);
+  const [ anonymousChecked, setAnonymousChecked ] = useState(false);
   const [ boards, setBoards ] = useState([]);
+  const [ commentFormExpanded, setCommentFormExpanded ] = useState([]);
+  const [ comments, setComments ] = useState([]);
   const [ currentBoard, setCurrentBoard ] = useState(`-M_qnb3Aah2p0BDqMmgq`);
   const [ currentBoardName, setCurrentBoardName] = useState('Public');
-  const [ newBoardInput, setNewBoardInput ] = useState('');
-  const [ anonymousChecked, setAnonymousChecked ] = useState(false);
+  const [ messages, setMessages ] = useState([]);
   const [ messagesWithAnonChecked, setMessagesWithAnonChecked ] = useState([]);
-  const [ comments, setComments ] = useState([]);
-  const [ commentFormExpanded, setCommentFormExpanded ] = useState([]);
   const [ mobileExpanded, setMobileExpanded ] = useState(false);
+  const [ newBoardInput, setNewBoardInput ] = useState('');
 
   // selectors
-  const formNameInput = document.getElementById('name');
   const formAnonymousCheck = document.getElementById('anonymous');
   const formMessageInput = document.getElementById('message');
+  const formNameInput = document.getElementById('name');
   const formNewBoard = document.getElementById('boardName');
 
   // database references
   const dbRef = firebase.database().ref();
-  const currentMessagesRef = firebase.database().ref(`${currentBoard}/messages`);
   const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
+  const currentMessagesRef = firebase.database().ref(`${currentBoard}/messages`);
 
   // functions
-  // 
+  // collapses the boards list on mobile screen
   const expandComments = () => {
     setMobileExpanded(!mobileExpanded);
   }
 
-  // handles new message submit in the new message form
-  const handleSubmit = (event) => {
-    // prevent reloading the page
-    event.preventDefault();
-    
-    // grab values from the form and format dates
-    const submittedMessage = formMessageInput.value;
-    const submittedName = formAnonymousCheck.checked ? "Anonymous" : formNameInput.value;
-    const newDate = new Date();
-    const submittedDate = getFormattedDate(newDate);
-
-    // update the database
-    currentMessagesRef.push({message: submittedMessage, name: submittedName, date: submittedDate, likes: 0, clicks: 0 });
-
-    // set focus on form again
-    formNameInput.focus();
-  }
-
-  // handles hitting enter when focused on anonymous label/checkbox
-  const handleEnterAnonymous = ({ key }) => {
-    if (key === 'Enter') {
-      handleAnonCheck();
-    }
-  }
-
-  // handles liking a message on any board
-  const handleLike = async (key) => {
-    // retrieve number of likes from database
-    const dbResponse = await currentMessagesRef.child(`${key}`).get(`likes`);
-    const message = dbResponse.toJSON();
-    const { likes } = message;
-
-    // update the likes value in the database
-    currentMessagesRef.child(`${key}`).update({likes: (likes + 1)});
-  }
-
-  // handles the changing of message boards
-  const handleBoardChange = async (key) => {
-    // set the current board state
-    setCurrentBoard(key);
-
-    // get the board name from the 
-    const dbResponse = await dbRef.child(key).get(`topicName`);
-    const board = await dbResponse.toJSON();
-    const { topicName } = board;
-
-    // set the board name state for the Latest Messages heading
-    setCurrentBoardName(topicName);
-    console.log('done');
-  }
-
-  // handles change in value of new board input
-  const handleNewBoardChange = ({ target }) => {
-    setNewBoardInput(target.value);
-  }
-
-  // handles submit of new board form
-  const handleNewBoardSubmit = (event) => {
-    // prevent page from reloading
-    event.preventDefault();
-
-    // store the new baord name
-    const submittedBoardName = formNewBoard.value;
-
-    // update the userInput state
-    setNewBoardInput('');
-
-    // update the database
-    dbRef.push({ topicName: submittedBoardName, messages: {} });
-  }
-
+  // handles if the remain anonymous checkbox is checked in message and comment forms
   const handleAnonCheck = async (comment, key) => {
-    console.log('check');
     if (comment === true) {
       // setting new state
       const newState = (
-        messagesWithAnonChecked.indexOf(key) === -1 
-        ? [key] 
-        : []
+        messagesWithAnonChecked.indexOf(key) === -1
+          ? [key]
+          : []
       );
-      console.log('new state',  newState);
       setMessagesWithAnonChecked(newState);
     } else if (!comment) {
       if (!anonymousChecked) {
@@ -134,23 +62,18 @@ function App() {
     }
   }
 
-  // handles new comment being submitted on a message
-  const handleNewComment = (event, key, nameInputId, anonCheckId, messageInputId, ) => {
-    // prevent reloading the page
-    event.preventDefault();
+  // handles the changing of message boards
+  const handleBoardChange = async (key) => {
+    // set the current board state
+    setCurrentBoard(key);
 
-    console.log(document.getElementById(nameInputId).value);
-    console.log(document.getElementById(anonCheckId).checked);
-    console.log(document.getElementById(messageInputId).value);
+    // get the board name from the database
+    const dbResponse = await dbRef.child(key).get(`topicName`);
+    const board = dbResponse.toJSON();
+    const { topicName } = board;
 
-    // grab values from the form and format dates
-    const submittedMessage = document.getElementById(messageInputId).value;
-    const submittedName = document.getElementById(anonCheckId).checked ? "Anonymous" : document.getElementById(nameInputId).value;
-    const newDate = new Date();
-    const submittedDate = getFormattedDate(newDate);
-
-    // update the database
-    dbRef.child(`${currentBoard}/comments`).push({ name: submittedName, date: submittedDate, message: submittedMessage, likes: 0, associatedPost: key });
+    // set the board name state for the Latest Messages heading
+    setCurrentBoardName(topicName);
   }
 
   // handles adding a new like onto a comment
@@ -164,9 +87,86 @@ function App() {
     currentCommentsRef.child(`${key}`).update({ likes: (likes + 1) });
   }
 
-  // useEffect hooks
-  // boards update
+  // handles hitting enter when focused on anonymous label/checkbox
+  const handleEnterAnonymous = ({ key }) => {
+    if (key === 'Enter') {
+      handleAnonCheck();
+    }
+  }
+
+  // handles liking a message on any board
+  const handleLike = async (key) => {
+    // retrieve number of likes from database
+    const dbResponse = await currentMessagesRef.child(key).get(`likes`);
+    const message = dbResponse.toJSON();
+    const { likes } = message;
+
+    // update the likes value in the database
+    currentMessagesRef.child(`${key}`).update({ likes: (likes + 1) });
+  }
+
+  // handles change in value of new board input
+  const handleNewBoardChange = ({ target }) => {
+    setNewBoardInput(target.value);
+  }
+
+  // handles submit of new board form
+  const handleNewBoardSubmit = (event) => {
+    // prevent page from reloading
+    event.preventDefault();
+
+    // store the new board name
+    const submittedBoardName = formNewBoard.value;
+
+    // reset the userInput state
+    setNewBoardInput('');
+
+    // update the database
+    dbRef.push({ topicName: submittedBoardName, messages: {} });
+  }
+
+  // handles new comment being submitted on a message
+  const handleNewComment = (event, key, nameInputId, anonCheckId, messageInputId) => {
+    // prevent reloading the page
+    event.preventDefault();
+
+    // grab values from the form and format dates
+    const submittedName = document.getElementById(
+      anonCheckId).checked
+      ? "Anonymous"
+      : document.getElementById(nameInputId).value;
+    const submittedMessage = document.getElementById(messageInputId).value;
+    const newDate = new Date();
+    const submittedDate = getFormattedDate(newDate);
+
+    // update the database
+    dbRef.child(`${currentBoard}/comments`).push({ name: submittedName, date: submittedDate, message: submittedMessage, likes: 0, associatedPost: key });
+  }
+
+  // handles new message submit in the new message form
+  const handleSubmit = (event) => {
+    // prevent reloading the page
+    event.preventDefault();
+    
+    // grab values from the form and format dates
+    const submittedName = 
+      formAnonymousCheck.checked 
+      ? "Anonymous" 
+      : formNameInput.value;
+    const submittedMessage = formMessageInput.value;
+    const newDate = new Date();
+    const submittedDate = getFormattedDate(newDate);
+
+    // update the database
+    currentMessagesRef.push({message: submittedMessage, name: submittedName, date: submittedDate, likes: 0, clicks: 0 });
+
+    // set focus on form again
+    formNameInput.focus();
+  }
+
+  // useEffect hook
   useEffect(() => {
+    // boards update
     const dbRef = firebase.database().ref();
     dbRef.on("value", (snapshot) => {
       // initialize new state
@@ -182,6 +182,7 @@ function App() {
       setBoards(newState);
     })
 
+    // messages update
     const currentBoardRef = firebase.database().ref(`${currentBoard}`);
     currentBoardRef.on("value", (snapshot) => {
       // initialize new state
@@ -198,6 +199,7 @@ function App() {
       setMessages(newState);
     })
 
+    // comments update
     const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
     currentCommentsRef.on("value", (snapshot) => {
       // initialize new state

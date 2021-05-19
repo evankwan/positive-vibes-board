@@ -1,11 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
 
 const MessageBoardList = ({ addNewBoard, newBoardValue, updateNewBoardValue, boardsList, handleClick, isMobileExpanded }) => {
   
-
-  
-
   return (
     <aside className="boardsListContainer">
       <h3 
