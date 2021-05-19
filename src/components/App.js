@@ -130,9 +130,11 @@ function App() {
     // prevent reloading the page
     event.preventDefault();
 
+    console.log(anonCheckId);
+
     // grab values from the form and format dates
-    const submittedName = document.getElementById(
-      anonCheckId).checked
+    const submittedName = 
+      document.getElementById(anonCheckId).checked
       ? "Anonymous"
       : document.getElementById(nameInputId).value;
     const submittedMessage = document.getElementById(messageInputId).value;
@@ -258,7 +260,7 @@ function App() {
     <Fragment>
       {/* header component */}
       <Header />
-      <main>
+      <main class="main">
         <div className="wrapper mainContainer">
           {/* side bar with list of message boards */}
           <MessageBoardList 

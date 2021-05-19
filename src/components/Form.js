@@ -119,7 +119,7 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
             placeholder="Enter your name" 
             value={
               ifComment 
-              ? commentNameInput 
+              ? commentNameInput
               : userNameInput
             } 
             autoComplete="off"
