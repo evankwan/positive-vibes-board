@@ -76,7 +76,7 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
           className="commentLine"
           onClick={() => handleCommentClick(key)}
         >
-          Add Comment
+          Comment
         </p>
       </div>
       
