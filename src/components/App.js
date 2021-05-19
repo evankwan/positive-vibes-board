@@ -196,6 +196,9 @@ function App() {
   }, [currentBoard])
 
   useEffect(() => {
+    if (!currentBoard) {
+      setCurrentBoard(`-M_qnb3Aah2p0BDqMmgq`);
+    }
     // comments update
     const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
     currentCommentsRef.on("value", (snapshot) => {

@@ -117,11 +117,9 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
       <ul className="commentList">
         {
           postComments.length > 0 
-          ? <li className="commentHeading" onClick={handleClick}>Comments:
-              <span className="mobileOnly">
-                &nbsp;
-                <FontAwesomeIcon icon="caret-down" />
-              </span>
+          ? <li className="commentHeading" onClick={handleClick}    >Comments
+              &nbsp;
+              <FontAwesomeIcon icon="caret-down" />
             </li> 
           : "No Comments"
         }

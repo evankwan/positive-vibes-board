@@ -269,7 +269,6 @@ li,
 }
 
 /* backgrounds */
-.boardButton,
 .boardNameInput,
 .commentListItem,
 .commentMessageField:hover,
@@ -278,9 +277,7 @@ li,
 .footer,
 .messageBoardPost,
 .messageField,
-.nameInput,
-.submitButton,
-.submitButton:focus {
+.nameInput {
   background-color: #222;
 }
 
@@ -289,14 +286,12 @@ header {
   background-color: #232323;
 }
 
-.boardButton:hover,
 .commentMessageField:hover,
 .commentNameInput:hover,
 .formHeadingContainer:hover,
 .messageBoardPost:hover,
 .messageField:hover,
-.nameInput:hover,
-.submitButton:hover {
+.nameInput:hover {
   background-color: #333;
 }
 
@@ -305,12 +300,16 @@ header {
   background-color: #efefefef;
 }
 
+.boardButton:focus,
 .boardButton:hover,
+.submitButton:focus,
 .submitButton:hover {
   background-color: #e3c73c;
 }
 
 /* colors */
+.fa-comment:focus,
+.fa-comment:hover,
 .fa-sun,
 .formHeading:hover,
 h1,
@@ -404,6 +403,7 @@ h3,
 /* misc */
 .anonymousLabel,
 .boardButton,
+.commentHeading,
 .commentLine,
 .createdAtJuno,
 .fa-check-square,
@@ -485,12 +485,19 @@ li {
   list-style: none;
 }
 
+button,
+input {
+  font-family: 'Raleway', sans-serif;
+}
+
 /* END OF SEMANTIC TAG STYLES */
 
 /* CLASSES */
 .main {
+  min-height: calc(100vh - 205px);
   padding-bottom: 20px;
 }
+
 .headerContainer {
   height: 150px;
 }
@@ -585,6 +592,7 @@ li {
 
 .messageBoardPost {
   border-radius: 20px 20px 20px 0;
+  overflow: hidden;
   padding: 20px;
 }
 
@@ -651,11 +659,22 @@ li {
 
 .createdAtJuno {
   padding: 20px 50px;
+  text-align: center;
   text-decoration: none;
 }
 
 .createdAtJuno:hover {
   color: #ea593e;
+}
+
+.temporaryHidden {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 1s ease;
+  margin: 0;
+  padding: 0;
 }
 
 @media (max-width: 1024px) {
@@ -837,6 +856,11 @@ li {
     position: static;
     display: block;
     margin-left: 40px;
+  }
+
+  .createdAtJuno {
+    font-size: 1.8rem;
+    padding: 5px 20px;
   }
 }
 
