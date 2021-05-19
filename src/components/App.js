@@ -24,6 +24,7 @@ function App() {
   const [ messagesWithAnonChecked, setMessagesWithAnonChecked ] = useState([]);
   const [ comments, setComments ] = useState([]);
   const [ commentFormExpanded, setCommentFormExpanded ] = useState([]);
+  const [ mobileExpanded, setMobileExpanded ] = useState(false);
 
   // selectors
   const formNameInput = document.getElementById('name');
@@ -37,8 +38,10 @@ function App() {
   const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
 
   // functions
-  // handles change of value in the new message form
-  
+  // 
+  const expandComments = () => {
+    setMobileExpanded(!mobileExpanded);
+  }
 
   // handles new message submit in the new message form
   const handleSubmit = (event) => {
@@ -217,9 +220,8 @@ function App() {
       <MessageBoardListItem
         key={board.key} 
         boardName={board} 
-        clickEvent={(key) => {
-          handleBoardChange(key);
-        }} 
+        clickEvent={handleBoardChange}
+        collapseList={expandComments}
       />
     )
   })
@@ -262,6 +264,8 @@ function App() {
             newBoardValue={newBoardInput}
             updateNewBoardValue={handleNewBoardChange}
             boardsList={boardsList}
+            handleClick={expandComments}
+            isMobileExpanded={mobileExpanded}
           />
 
           {/* new message form */}

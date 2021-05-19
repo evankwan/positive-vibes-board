@@ -638,7 +638,7 @@ li {
   }
 
   .formHeadingContainer {
-    padding-top: 0;
+    padding: 10px 25px;
   }
 
   .formHeading {
@@ -686,12 +686,13 @@ li {
   .fa-heart {
     font-size: 2rem;
     top: 0;
+    left: 10px;
   }
 
   .fa-comment {
     font-size: 2rem;
     bottom: 0;
-    left: 0;
+    left: 10px;
   }
 
   .likesCount {
@@ -699,7 +700,7 @@ li {
     bottom: 0;
     position: static;
     display: block;
-    margin: 10px 35px;
+    margin: 10px 40px;
   }
 
   .commentLine {
@@ -707,7 +708,7 @@ li {
     bottom: 0;
     position: static;
     display: block;
-    margin-left: 30px;
+    margin-left: 40px;
   }
 }
 
