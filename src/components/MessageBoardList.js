@@ -1,12 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 
-const MessageBoardList = ({ addNewBoard, newBoardValue, updateNewBoardValue, boardsList }) => {
-  const [ mobileExpanded, setMobileExpanded ] = useState(false);
+const MessageBoardList = ({ addNewBoard, newBoardValue, updateNewBoardValue, boardsList, handleClick, isMobileExpanded }) => {
+  
 
-  const handleClick = () => {
-    setMobileExpanded(!mobileExpanded);
-  }
+  
 
   return (
     <aside className="boardsListContainer">
@@ -20,7 +18,7 @@ const MessageBoardList = ({ addNewBoard, newBoardValue, updateNewBoardValue, boa
       </h3>
       <div className={`boardFormContainer 
           ${
-            mobileExpanded
+            isMobileExpanded
             ? ""
             : "hiddenMobile"
           }`
@@ -53,7 +51,7 @@ const MessageBoardList = ({ addNewBoard, newBoardValue, updateNewBoardValue, boa
       {/* list of boards */}
       <ul id="boardsList" className={`boardsList 
           ${
-            mobileExpanded
+            isMobileExpanded
             ? ""
             : "hiddenMobile"
           }`

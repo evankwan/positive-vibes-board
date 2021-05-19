@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 
 // component for the new message form
-const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComment = false, commentKey, addNewComment, commentMessageInputChange, commentNameInputChange, commentAnonChecked, commentNameInput, commentMessageInput, commentAnonCheck, expandCommentForm = [] }) => {
+const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComment = false, commentKey, addNewComment, commentMessageInputChange, commentNameInputChange, commentAnonChecked, commentNameInput, commentMessageInput, commentAnonCheck, expandComments, expandCommentForm = [] }) => {
   // states
   const [ expanded, setExpanded ] = useState(false);
   const [ userMessageInput, setUserMessageInput ] = useState('');
@@ -71,6 +71,7 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
             // update the userInput states
             commentNameInputChange('');
             commentMessageInputChange('');
+            expandComments();
           }
           : (event) => {
             submitEvent(event);

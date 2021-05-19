@@ -36,6 +36,10 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
     setIsCommentFormExpanded(expandedComments);
   }
 
+  const openComments = () => {
+    setExpandedComments(true);
+  }
+
   const handleClick = () => {
     setExpandedComments(!expandedComments);
   }
@@ -87,6 +91,7 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
         commentNameInput={userCommentNameInput}
         commentMessageInput={userCommentMessageInput}
         commentAnonCheck={switchCheckbox}
+        expandComments={openComments}
       />
 
       <ul className="commentList">
@@ -98,7 +103,7 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
                 <FontAwesomeIcon icon="caret-down" className="mobileOnly" />
               </span>
             </li> 
-          : ""
+          : "No Comments"
         }
         {
           postComments.map((comment) => {
