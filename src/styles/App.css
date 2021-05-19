@@ -181,6 +181,7 @@ ul {
 
 .boardFormContainer,
 .boardsListHeading,
+.createdAtJuno,
 .messageForm {
   padding-bottom: 20px;
 }
@@ -392,6 +393,7 @@ h1,
 }
 
 .boardsListHeading,
+.createdAtJuno,
 .formHeading,
 h1,
 h2,
@@ -658,8 +660,6 @@ input {
 }
 
 .createdAtJuno {
-  padding: 20px 50px;
-  text-align: center;
   text-decoration: none;
 }
 
@@ -733,16 +733,6 @@ input {
   .boardButton {
     margin: 0;
     height: 100%;
-  }
-
-  .hiddenMobile {
-    height: 0;
-    overflow: hidden;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 1s ease;
-    margin: 0;
-    padding: 0;
   }
 
   .mobileOnly {
