@@ -181,7 +181,7 @@ ul {
 
 .boardFormContainer,
 .boardsListHeading,
-.createdAtJuno,
+.main,
 .messageForm {
   padding-bottom: 20px;
 }
@@ -497,7 +497,6 @@ input {
 /* CLASSES */
 .main {
   min-height: calc(100vh - 205px);
-  padding-bottom: 20px;
 }
 
 .headerContainer {
