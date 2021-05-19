@@ -6,7 +6,7 @@ const Comment = ({ commentObject: { details: { date, likes, message, name }, key
     <li className={`commentListItem ${
           isExpanded
           ? ""
-          : "hiddenMobile"
+          : "temporaryHidden"
         }`
       }
     >

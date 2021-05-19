@@ -15,6 +15,7 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 /* flex */
 .anonymousContainer,
 .boardButton,
+.footer,
 .formContainer,
 .formHeadingContainer,
 .formMessageContainer,
@@ -30,6 +31,7 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 
 .anonymousContainer,
 .boardButton,
+.footer,
 .formContainer,
 .formHeadingContainer,
 .formMessageContainer,
@@ -43,6 +45,7 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 
 .anonymousContainer,
 .boardButton,
+.footer,
 .formContainer,
 .formHeadingContainer,
 .formSubmitContainer,
@@ -108,6 +111,7 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 }
 
 /* sizing */
+.footer,
 .nameInput,
 .submitButton {
   height: 50px;
@@ -115,6 +119,7 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 
 .boardButton,
 .boardFormContainer,
+.footer,
 .formMessageContainer,
 .formNameContaine,
 .formSubmitContainer,
@@ -264,17 +269,15 @@ li,
 }
 
 /* backgrounds */
-.boardButton,
 .boardNameInput,
 .commentListItem,
 .commentMessageField:hover,
 .commentNameInput:hover,
 .commentSubmitButton:hover,
+.footer,
 .messageBoardPost,
 .messageField,
-.nameInput,
-.submitButton,
-.submitButton:focus {
+.nameInput {
   background-color: #222;
 }
 
@@ -283,14 +286,12 @@ header {
   background-color: #232323;
 }
 
-.boardButton:hover,
 .commentMessageField:hover,
 .commentNameInput:hover,
 .formHeadingContainer:hover,
 .messageBoardPost:hover,
 .messageField:hover,
-.nameInput:hover,
-.submitButton:hover {
+.nameInput:hover {
   background-color: #333;
 }
 
@@ -299,12 +300,16 @@ header {
   background-color: #efefefef;
 }
 
+.boardButton:focus,
 .boardButton:hover,
+.submitButton:focus,
 .submitButton:hover {
   background-color: #e3c73c;
 }
 
 /* colors */
+.fa-comment:focus,
+.fa-comment:hover,
 .fa-sun,
 .formHeading:hover,
 h1,
@@ -316,6 +321,7 @@ label.anonymousLabel:hover {
 .boardsListHeading,
 .boardNameInput,
 .commentListItem,
+.createdAtJuno,
 .fa-check-square,
 .fa-square,
 .formHeading,
@@ -351,6 +357,7 @@ h3 {
 }
 
 .boardButton,
+.createdAtJuno,
 .fa-check-square,
 .fa-square,
 .submitButton {
@@ -396,7 +403,9 @@ h3,
 /* misc */
 .anonymousLabel,
 .boardButton,
+.commentHeading,
 .commentLine,
+.createdAtJuno,
 .fa-check-square,
 .fa-comment,
 .fa-heart,
@@ -476,9 +485,19 @@ li {
   list-style: none;
 }
 
+button,
+input {
+  font-family: 'Raleway', sans-serif;
+}
+
 /* END OF SEMANTIC TAG STYLES */
 
 /* CLASSES */
+.main {
+  min-height: calc(100vh - 205px);
+  padding-bottom: 20px;
+}
+
 .headerContainer {
   height: 150px;
 }
@@ -573,6 +592,7 @@ li {
 
 .messageBoardPost {
   border-radius: 20px 20px 20px 0;
+  overflow: hidden;
   padding: 20px;
 }
 
@@ -635,6 +655,26 @@ li {
 
 .commentListItem:hover {
   border: 2px solid #666;
+}
+
+.createdAtJuno {
+  padding: 20px 50px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.createdAtJuno:hover {
+  color: #ea593e;
+}
+
+.temporaryHidden {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 1s ease;
+  margin: 0;
+  padding: 0;
 }
 
 @media (max-width: 1024px) {
@@ -816,6 +856,11 @@ li {
     position: static;
     display: block;
     margin-left: 40px;
+  }
+
+  .createdAtJuno {
+    font-size: 1.8rem;
+    padding: 5px 20px;
   }
 }
 
