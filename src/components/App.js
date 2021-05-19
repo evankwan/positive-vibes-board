@@ -19,6 +19,7 @@ function App() {
   const [ boards, setBoards ] = useState([]);
   const [ commentFormExpanded, setCommentFormExpanded ] = useState([]);
   const [ comments, setComments ] = useState([]);
+  // currentBoard and currentBoardName could probably be condensed into a single state that holds an object with both values
   const [ currentBoard, setCurrentBoard ] = useState(`-M_qnb3Aah2p0BDqMmgq`);
   const [ currentBoardName, setCurrentBoardName] = useState('Public');
   const [ messages, setMessages ] = useState([]);
@@ -108,6 +109,8 @@ function App() {
     // reset the userInput state
     setNewBoardInput('');
 
+    // for future, update the currentBoard to the new board
+
     // update the database
     dbRef.push({ topicName: submittedBoardName, messages: {} });
   }
@@ -170,7 +173,9 @@ function App() {
       // set the boards state 
       setBoards(newState);
     })
+  }, [currentBoard, mobileExpanded])
 
+  useEffect(() => {
     // messages update
     const currentBoardRef = firebase.database().ref(`${currentBoard}`);
     currentBoardRef.on("value", (snapshot) => {
@@ -187,7 +192,9 @@ function App() {
       // set the messages state
       setMessages(newState);
     })
+  }, [currentBoard, commentFormExpanded])
 
+  useEffect(() => {
     // comments update
     const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
     currentCommentsRef.on("value", (snapshot) => {
@@ -203,9 +210,10 @@ function App() {
       // set the comments state
       setComments(newState);
     })
-  }, [commentFormExpanded, currentBoard, mobileExpanded, newBoardInput])
+  }, [currentBoard, commentFormExpanded])
 
   // page elements
+  // boards
   const boardsList = boards.map((board) => {
     return (
       <MessageBoardListItem
@@ -217,6 +225,7 @@ function App() {
     )
   })
 
+  // messages - related comments inside
   const messagesList = messages.map((messageObject) => {
     // pull related comments for each message
     const relatedComments = comments.filter((commentObject) => {
