@@ -750,6 +750,16 @@ input {
   .boardFormContainer {
     margin-top: 20px;
   }
+
+  .hiddenMobile {
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 1s ease;
+    margin: 0;
+    padding: 0;
+  }
 }
 
 @media (max-width: 500px) {
