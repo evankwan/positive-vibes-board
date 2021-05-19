@@ -256,7 +256,7 @@ function App() {
     <Fragment>
       {/* header component */}
       <Header />
-      <main class="main">
+      <main className="main">
         <div className="wrapper mainContainer">
           {/* side bar with list of message boards */}
           <MessageBoardList 
