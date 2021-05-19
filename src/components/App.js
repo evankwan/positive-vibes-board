@@ -279,7 +279,7 @@ function App() {
 
             {/* message board */}
             <section className="messagesBoardContainer">
-              <h3 className="messagesListHeading">Latest Messages on {currentBoardName} Board</h3>
+              <h2 className="messagesListHeading">Latest Messages on {currentBoardName} Board</h2>
               <ul>
                 {messagesList}
               </ul>
