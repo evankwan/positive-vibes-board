@@ -63,12 +63,10 @@ header {
   box-sizing: content-box;
 }
 
-.fa-heart:focus {
-  outline: 2px solid #f84a2f;
-}
-
+.fa-heart:focus,
 .fa-heart:active {
-  outline: 2px solid #f9f9f9;
+  outline: 2px solid #f84a2f;
+  outline-offset: 5px;
 }
 
 .fa-comment {
@@ -80,8 +78,10 @@ header {
   box-sizing: content-box;
 }
 
-.fa-comment:focus {
+.fa-comment:focus
+.fa-comment:active {
   outline: 2px solid #f9f9f9;
+  outline-offset: 5px;
 }
 
 .fa-square {
