@@ -4,7 +4,7 @@ const MessageBoardList = ({ addNewBoard, newBoardValue, updateNewBoardValue, boa
   
   return (
     <aside className="boardsListContainer">
-      <h3 
+      <h2 
         id="boardsListHeading" className="boardsListHeading"
         onClick={handleClick}
       >
@@ -13,7 +13,7 @@ const MessageBoardList = ({ addNewBoard, newBoardValue, updateNewBoardValue, boa
           &nbsp;
           <FontAwesomeIcon icon="caret-down" />
         </span>
-      </h3>
+      </h2>
       <div className={`boardFormContainer 
           ${
             isMobileExpanded
