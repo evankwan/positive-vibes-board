@@ -15,6 +15,7 @@ const Comment = ({ commentObject: { details: { date, likes, message, name }, key
 
       <div className="likeContainer">
         <FontAwesomeIcon
+        aria-label="like this comment"
           icon="heart"
           onClick={() => {
             updateLikes(key);

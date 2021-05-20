@@ -67,6 +67,7 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
       <p className="messageText">&#187; {message}</p>
       <div className="likeContainer">
         <FontAwesomeIcon 
+          aria-label="like this post"
           icon="heart" 
           onClick={() => {
             updateLikes(key)
@@ -80,6 +81,7 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
         />
         <p className="likesCount">{likes}</p>
         <FontAwesomeIcon
+          aria-label="comment on this post"
           icon="comment"
           tabIndex="0"
           onClick={() => handleCommentClick(key)}
