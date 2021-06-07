@@ -45,7 +45,7 @@ Once messages were enabled, I added the ability to create and switch between dif
 
 The final steps were adding in comments and the ability to like each post.
 
-#### Technical Wins
+### Technical Wins
 
 I am very proud to have created this as my first React project and also my first Firebase project. Creating the database structure that was flat and also allowed me to easily pull message boards, their associated messages, and the comments associated with each message was a big win to start out.
 
@@ -53,7 +53,7 @@ Putting this project together in just one week on top of 8 hours of classes each
 
 Finally, creating a React app that successfully leveraged components where necessary for abstraction and reusability is something that I am proud of for this first project.
 
-#### Technical Challenges
+### Technical Challenges
 
 I had a few instances where I struggled with moving states that only affected the child components into those respective child components. The comments form expanded state could have lived within the message component, but I had used it in the dependency array and useEffect logic in App.js. Due to time constraints, I wasn't able to refactor this code to move this state into the Message component. 
 
