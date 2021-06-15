@@ -11,7 +11,6 @@ import getFormattedDate from '../utilities/getFormattedDate';
 import Message from './Message';
 import MessageBoardList from './MessageBoardList'
 import MessageBoardListItem from './MessageBoardListItem';
-import Perspective from 'perspective-api-client';
 
 function App() {
   // adding fontawesome icons globally
@@ -209,18 +208,22 @@ function App() {
 
     const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyBMrRb_R0qDCxE9FTeus_TQ4HuHvDSHfXk`);
 
-    await checkMessage(analyzeUrl, submittedMessage);
+    const messageTestResult = await checkMessage(analyzeUrl, submittedMessage);
+    
+    if (messageTestResult) {
+      // update the database
+      currentMessagesRef.push({ message: submittedMessage, name: submittedName, date: submittedDate, likes: 0, clicks: 0 });
 
-    // update the database
-    currentMessagesRef.push({message: submittedMessage, name: submittedName, date: submittedDate, likes: 0, clicks: 0 });
-
-    // set focus on form again
-    formNameInput.focus();
+      // set focus on form again
+      formNameInput.focus();
+    } else {
+      alert('Please reconsider your message. This is a positivity message board and toxicity, insults, threats, identity attacks, and profanity are not allowed.');
+    }
   }
 
   // function to test comment score
   const checkMessage = async (url, message) => {
-    axios
+    const attributeScores = await axios
       .post(url, {
         comment: {
           text: message
@@ -236,29 +239,27 @@ function App() {
           SEVERE_TOXICITY: {}
         }
       })
-    .then(async (response) => {
-      console.log(response);
-    })
-    // const response = await fetch(url, {
-    //   method: 'POST',
-    //   mode: 'cors',
-    //   credentials: 'same-origin',
-    //   comment: {
-    //     text: message
-    //   },
-    //   languages: ["en"],
-    //   requestedAttributes: {
-    //     TOXICITY: {},
-    //     INSULT: {},
-    //     FLIRTATION: {},
-    //     THREAT: {}
-    //   }
-    // });
+      .then(async (response) => {
+        return response.data.attributeScores
+      }).catch((error) => {
+        console.error('Perspective API Check Failed');
+        return {}
+      })
+    console.log(attributeScores);
 
-    // console.log(response);
-    // const apiData = await response.json();
-
-    // console.log(apiData);
+    const scores = [];
+    for (let attribute in attributeScores) {
+      if (attributeScores[attribute].summaryScore.value >= 0.5) {
+        scores.push(false);
+      } else {
+        scores.push(true);
+      }
+    }
+    if (scores.includes(false)) {
+      return false
+    } else {
+      return true
+    }
   }
 
   // page elements
