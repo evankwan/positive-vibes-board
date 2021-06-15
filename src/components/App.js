@@ -27,6 +27,7 @@ function App() {
   const [ messages, setMessages ] = useState([]);
   const [ mobileExpanded, setMobileExpanded ] = useState(false);
   const [ newBoardInput, setNewBoardInput ] = useState('');
+  const [ showModal, setShowModal ] = useState(false);
 
   // selectors
   const formMessageInput = document.getElementById('message');
@@ -158,7 +159,7 @@ function App() {
   }
 
   // handles submit of new board form
-  const handleNewBoardSubmit = (event) => {
+  const handleNewBoardSubmit = async (event) => {
     // prevent page from reloading
     event.preventDefault();
 
@@ -168,14 +169,20 @@ function App() {
     // reset the userInput state
     setNewBoardInput('');
 
-    // for future, update the currentBoard to the new board
+    // test board name
+    const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyBMrRb_R0qDCxE9FTeus_TQ4HuHvDSHfXk`);
+    const messageTestResult = await checkMessage(analyzeUrl, submittedBoardName);
 
-    // update the database
-    dbRef.push({ topicName: submittedBoardName, messages: {} });
+    if (messageTestResult) {
+      // update the database
+      dbRef.push({ topicName: submittedBoardName, messages: {} });
+    } else {
+      setShowModal(true);
+    }
   }
 
   // handles new comment being submitted on a message
-  const handleNewComment = (event, key, nameInputId, anonCheckId, messageInputId) => {
+  const handleNewComment = async (event, key, nameInputId, anonCheckId, messageInputId) => {
     // prevent reloading the page
     event.preventDefault();
 
@@ -188,12 +195,20 @@ function App() {
     const newDate = new Date();
     const submittedDate = getFormattedDate(newDate);
 
-    // update the database
-    dbRef.child(`${currentBoard}/comments`).push({ name: submittedName, date: submittedDate, message: submittedMessage, likes: 0, associatedPost: key });
+    // perspective API check
+    const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyBMrRb_R0qDCxE9FTeus_TQ4HuHvDSHfXk`);
+    const messageTestResult = await checkMessage(analyzeUrl, submittedMessage);
+
+    if (messageTestResult) {
+      // update the database
+      dbRef.child(`${currentBoard}/comments`).push({ name: submittedName, date: submittedDate, message: submittedMessage, likes: 0, associatedPost: key });
+    } else {
+      setShowModal(true);
+    }
   }
 
   // handles new message submit in the new message form
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event, message) => {
     // prevent reloading the page
     event.preventDefault();
     
@@ -202,7 +217,7 @@ function App() {
       anonymousChecked
       ? "Anonymous" 
       : formNameInput.value;
-    const submittedMessage = formMessageInput.value;
+    const submittedMessage = message;
     const newDate = new Date();
     const submittedDate = getFormattedDate(newDate);
 
@@ -217,7 +232,7 @@ function App() {
       // set focus on form again
       formNameInput.focus();
     } else {
-      alert('Please reconsider your message. This is a positivity message board and toxicity, insults, threats, identity attacks, and profanity are not allowed.');
+      setShowModal(true);
     }
   }
 
@@ -308,33 +323,51 @@ function App() {
       <Header />
       <main className="main">
         <div className="wrapper mainContainer">
-          {/* side bar with list of message boards */}
-          <MessageBoardList 
-            addNewBoard={handleNewBoardSubmit}
-            newBoardValue={newBoardInput}
-            updateNewBoardValue={handleNewBoardChange}
-            boardsList={boardsList}
-            handleClick={expandComments}
-            isMobileExpanded={mobileExpanded}
-          />
+          {
+            showModal
+              ? <div className="postRejectedModalContainer">
+                  <div className="postRejectedModal">
+                    <p className="postRejectedModalMessage">Please reconsider your post. This is a positivity message board.
+                      <br/><br/>
 
-          {/* new message form */}
-          <div className="messageBoard">
-            <Form
-              submitEvent={handleSubmit}
-              switchCheckbox={handleAnonCheck}
-              isChecked={anonymousChecked}
-              keydownCheckbox={handleEnterAnonymous}
-            />
+                      <strong> Toxic, sexually explicit, profane, threatening, or insulting comments are not permitted.</strong>
+                    </p>
+                    <button className="closePostRejectedModal" onClick={() => setShowModal(false)}>
+                      Close
+                    </button>
+                  </div>
+                </div>
+              : <>
+                  {/* side bar with list of message boards */}
+                  <MessageBoardList
+                    addNewBoard={handleNewBoardSubmit}
+                    newBoardValue={newBoardInput}
+                    updateNewBoardValue={handleNewBoardChange}
+                    boardsList={boardsList}
+                    handleClick={expandComments}
+                    isMobileExpanded={mobileExpanded}
+                  />
 
-            {/* message board */}
-            <section className="messagesBoardContainer">
-              <h2 className="messagesListHeading">Latest Messages on {currentBoardName} Board</h2>
-              <ul>
-                {messagesList}
-              </ul>
-            </section>
-          </div>
+                  {/* new message form */}
+                  <div className="messageBoard">
+                    <Form
+                      submitEvent={handleSubmit}
+                      switchCheckbox={handleAnonCheck}
+                      isChecked={anonymousChecked}
+                      keydownCheckbox={handleEnterAnonymous}
+                    />
+
+                    {/* message board */}
+                    <section className="messagesBoardContainer">
+                      <h2 className="messagesListHeading">Latest Messages on {currentBoardName} Board</h2>
+                      <ul>
+                        {messagesList}
+                      </ul>
+                    </section>
+                  </div>
+                </>
+          }
+          
         </div>
         {/* wrapper ended */}
       </main>

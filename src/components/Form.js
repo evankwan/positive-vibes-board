@@ -75,7 +75,7 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
             expandComments();
           }
           : (event) => {
-            submitEvent(event);
+            submitEvent(event, userMessageInput);
             // update the userInput states
             setUserNameInput('');
             setUserMessageInput('');
