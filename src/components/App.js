@@ -2,6 +2,7 @@ import '../styles/App.css';
 import { faSun, faCaretDown, faCheckSquare, faSquare, faHeart, faComment } from '@fortawesome/free-solid-svg-icons';
 import { Fragment, useEffect, useState } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
+import axios from 'axios';
 import firebase from '../config/firebase';
 import Footer from './Footer'
 import Form from './Form';
@@ -10,6 +11,7 @@ import getFormattedDate from '../utilities/getFormattedDate';
 import Message from './Message';
 import MessageBoardList from './MessageBoardList'
 import MessageBoardListItem from './MessageBoardListItem';
+import Perspective from 'perspective-api-client';
 
 function App() {
   // adding fontawesome icons globally
@@ -36,6 +38,65 @@ function App() {
   const dbRef = firebase.database().ref();
   const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
   const currentMessagesRef = firebase.database().ref(`${currentBoard}/messages`);
+
+  // useEffect hook
+  useEffect(() => {
+    // boards update
+    const dbRef = firebase.database().ref();
+    dbRef.on("value", (snapshot) => {
+      // initialize new state
+      const newState = [];
+      const data = snapshot.val();
+
+      // loop through data and add each board to new state
+      for (let key in data) {
+        newState.push({ key: key, name: data[key] });
+      }
+
+      // set the boards state 
+      setBoards(newState);
+    })
+  }, [])
+
+  useEffect(() => {
+    // messages update
+    const currentBoardRef = firebase.database().ref(`${currentBoard}`);
+    currentBoardRef.on("value", (snapshot) => {
+      // initialize new state
+      const newState = [];
+      const boardData = snapshot.val();
+      const { messages } = boardData;
+
+      // loop through data and add to new state IN REVERSE (newest show at top)
+      for (let key in messages) {
+        newState.unshift({ key: key, details: messages[key] })
+      }
+
+      // set the messages state
+      setMessages(newState);
+    })
+  }, [currentBoard])
+
+  useEffect(() => {
+    if (!currentBoard) {
+      setCurrentBoard(`-M_qnb3Aah2p0BDqMmgq`);
+    }
+    // comments update
+    const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
+    currentCommentsRef.on("value", (snapshot) => {
+      // initialize new state
+      const newState = [];
+      const data = snapshot.val();
+
+      // loop through data and add to new state IN REVERSE (newest show at top)
+      for (let key in data) {
+        newState.unshift({ key: key, details: data[key] })
+      };
+
+      // set the comments state
+      setComments(newState);
+    })
+  }, [currentBoard])
 
   // functions
   // collapses the boards list on mobile screen
@@ -133,7 +194,7 @@ function App() {
   }
 
   // handles new message submit in the new message form
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     // prevent reloading the page
     event.preventDefault();
     
@@ -146,6 +207,10 @@ function App() {
     const newDate = new Date();
     const submittedDate = getFormattedDate(newDate);
 
+    const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyBMrRb_R0qDCxE9FTeus_TQ4HuHvDSHfXk`);
+
+    await checkMessage(analyzeUrl, submittedMessage);
+
     // update the database
     currentMessagesRef.push({message: submittedMessage, name: submittedName, date: submittedDate, likes: 0, clicks: 0 });
 
@@ -153,64 +218,48 @@ function App() {
     formNameInput.focus();
   }
 
-  // useEffect hook
-  useEffect(() => {
-    // boards update
-    const dbRef = firebase.database().ref();
-    dbRef.on("value", (snapshot) => {
-      // initialize new state
-      const newState = [];
-      const data = snapshot.val();
-
-      // loop through data and add each board to new state
-      for (let key in data) {
-        newState.push({key: key, name: data[key]});
-      }
-      
-      // set the boards state 
-      setBoards(newState);
+  // function to test comment score
+  const checkMessage = async (url, message) => {
+    axios
+      .post(url, {
+        comment: {
+          text: message
+        },
+        languages: ["en"],
+        requestedAttributes: {
+          IDENTITY_ATTACK: {},
+          INSULT: {},
+          PROFANITY: {},
+          SEXUALLY_EXPLICIT: {},
+          THREAT: {},
+          TOXICITY: {},
+          SEVERE_TOXICITY: {}
+        }
+      })
+    .then(async (response) => {
+      console.log(response);
     })
-  }, [])
+    // const response = await fetch(url, {
+    //   method: 'POST',
+    //   mode: 'cors',
+    //   credentials: 'same-origin',
+    //   comment: {
+    //     text: message
+    //   },
+    //   languages: ["en"],
+    //   requestedAttributes: {
+    //     TOXICITY: {},
+    //     INSULT: {},
+    //     FLIRTATION: {},
+    //     THREAT: {}
+    //   }
+    // });
 
-  useEffect(() => {
-    // messages update
-    const currentBoardRef = firebase.database().ref(`${currentBoard}`);
-    currentBoardRef.on("value", (snapshot) => {
-      // initialize new state
-      const newState = [];
-      const boardData = snapshot.val();
-      const { messages } = boardData;
+    // console.log(response);
+    // const apiData = await response.json();
 
-      // loop through data and add to new state IN REVERSE (newest show at top)
-      for (let key in messages) {
-        newState.unshift({ key: key, details: messages[key] })
-      }
-
-      // set the messages state
-      setMessages(newState);
-    })
-  }, [currentBoard])
-
-  useEffect(() => {
-    if (!currentBoard) {
-      setCurrentBoard(`-M_qnb3Aah2p0BDqMmgq`);
-    }
-    // comments update
-    const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
-    currentCommentsRef.on("value", (snapshot) => {
-      // initialize new state
-      const newState = [];
-      const data = snapshot.val();
-
-      // loop through data and add to new state IN REVERSE (newest show at top)
-      for (let key in data) {
-        newState.unshift({ key: key, details: data[key] })
-      };
-
-      // set the comments state
-      setComments(newState);
-    })
-  }, [currentBoard])
+    // console.log(apiData);
+  }
 
   // page elements
   // boards

@@ -10,7 +10,7 @@ const Message = ({ content: { key, details: { name, date, message, likes } }, up
   const [ expandedComments, setExpandedComments ] = useState(false);
   const [ userCommentMessageInput, setUserCommentMessageInput ] = useState([]);
   const [ userCommentNameInput, setUserCommentNameInput ] = useState([]);
-  const [messagesWithAnonChecked, setMessagesWithAnonChecked] = useState([]);
+  const [ messagesWithAnonChecked, setMessagesWithAnonChecked ] = useState([]);
 
   // handles expanding the comment form
   const handleCommentClick = async (key) => {
