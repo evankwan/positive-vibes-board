@@ -2,6 +2,7 @@ import '../styles/App.css';
 import { faSun, faCaretDown, faCheckSquare, faSquare, faHeart, faComment } from '@fortawesome/free-solid-svg-icons';
 import { Fragment, useEffect, useState } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
+import axios from 'axios';
 import firebase from '../config/firebase';
 import Footer from './Footer'
 import Form from './Form';
@@ -26,6 +27,7 @@ function App() {
   const [ messages, setMessages ] = useState([]);
   const [ mobileExpanded, setMobileExpanded ] = useState(false);
   const [ newBoardInput, setNewBoardInput ] = useState('');
+  const [ showModal, setShowModal ] = useState(false);
 
   // selectors
   const formMessageInput = document.getElementById('message');
@@ -36,6 +38,65 @@ function App() {
   const dbRef = firebase.database().ref();
   const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
   const currentMessagesRef = firebase.database().ref(`${currentBoard}/messages`);
+
+  // useEffect hook
+  useEffect(() => {
+    // boards update
+    const dbRef = firebase.database().ref();
+    dbRef.on("value", (snapshot) => {
+      // initialize new state
+      const newState = [];
+      const data = snapshot.val();
+
+      // loop through data and add each board to new state
+      for (let key in data) {
+        newState.push({ key: key, name: data[key] });
+      }
+
+      // set the boards state 
+      setBoards(newState);
+    })
+  }, [])
+
+  useEffect(() => {
+    // messages update
+    const currentBoardRef = firebase.database().ref(`${currentBoard}`);
+    currentBoardRef.on("value", (snapshot) => {
+      // initialize new state
+      const newState = [];
+      const boardData = snapshot.val();
+      const { messages } = boardData;
+
+      // loop through data and add to new state IN REVERSE (newest show at top)
+      for (let key in messages) {
+        newState.unshift({ key: key, details: messages[key] })
+      }
+
+      // set the messages state
+      setMessages(newState);
+    })
+  }, [currentBoard])
+
+  useEffect(() => {
+    if (!currentBoard) {
+      setCurrentBoard(`-M_qnb3Aah2p0BDqMmgq`);
+    }
+    // comments update
+    const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
+    currentCommentsRef.on("value", (snapshot) => {
+      // initialize new state
+      const newState = [];
+      const data = snapshot.val();
+
+      // loop through data and add to new state IN REVERSE (newest show at top)
+      for (let key in data) {
+        newState.unshift({ key: key, details: data[key] })
+      };
+
+      // set the comments state
+      setComments(newState);
+    })
+  }, [currentBoard])
 
   // functions
   // collapses the boards list on mobile screen
@@ -98,7 +159,7 @@ function App() {
   }
 
   // handles submit of new board form
-  const handleNewBoardSubmit = (event) => {
+  const handleNewBoardSubmit = async (event) => {
     // prevent page from reloading
     event.preventDefault();
 
@@ -108,14 +169,20 @@ function App() {
     // reset the userInput state
     setNewBoardInput('');
 
-    // for future, update the currentBoard to the new board
+    // test board name
+    const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyBMrRb_R0qDCxE9FTeus_TQ4HuHvDSHfXk`);
+    const messageTestResult = await checkMessage(analyzeUrl, submittedBoardName);
 
-    // update the database
-    dbRef.push({ topicName: submittedBoardName, messages: {} });
+    if (messageTestResult) {
+      // update the database
+      dbRef.push({ topicName: submittedBoardName, messages: {} });
+    } else {
+      setShowModal(true);
+    }
   }
 
   // handles new comment being submitted on a message
-  const handleNewComment = (event, key, nameInputId, anonCheckId, messageInputId) => {
+  const handleNewComment = async (event, key, nameInputId, anonCheckId, messageInputId) => {
     // prevent reloading the page
     event.preventDefault();
 
@@ -128,12 +195,20 @@ function App() {
     const newDate = new Date();
     const submittedDate = getFormattedDate(newDate);
 
-    // update the database
-    dbRef.child(`${currentBoard}/comments`).push({ name: submittedName, date: submittedDate, message: submittedMessage, likes: 0, associatedPost: key });
+    // perspective API check
+    const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyBMrRb_R0qDCxE9FTeus_TQ4HuHvDSHfXk`);
+    const messageTestResult = await checkMessage(analyzeUrl, submittedMessage);
+
+    if (messageTestResult) {
+      // update the database
+      dbRef.child(`${currentBoard}/comments`).push({ name: submittedName, date: submittedDate, message: submittedMessage, likes: 0, associatedPost: key });
+    } else {
+      setShowModal(true);
+    }
   }
 
   // handles new message submit in the new message form
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event, message) => {
     // prevent reloading the page
     event.preventDefault();
     
@@ -142,75 +217,65 @@ function App() {
       anonymousChecked
       ? "Anonymous" 
       : formNameInput.value;
-    const submittedMessage = formMessageInput.value;
+    const submittedMessage = message;
     const newDate = new Date();
     const submittedDate = getFormattedDate(newDate);
 
-    // update the database
-    currentMessagesRef.push({message: submittedMessage, name: submittedName, date: submittedDate, likes: 0, clicks: 0 });
+    const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyBMrRb_R0qDCxE9FTeus_TQ4HuHvDSHfXk`);
 
-    // set focus on form again
-    formNameInput.focus();
+    const messageTestResult = await checkMessage(analyzeUrl, submittedMessage);
+    
+    if (messageTestResult) {
+      // update the database
+      currentMessagesRef.push({ message: submittedMessage, name: submittedName, date: submittedDate, likes: 0, clicks: 0 });
+
+      // set focus on form again
+      formNameInput.focus();
+    } else {
+      setShowModal(true);
+    }
   }
 
-  // useEffect hook
-  useEffect(() => {
-    // boards update
-    const dbRef = firebase.database().ref();
-    dbRef.on("value", (snapshot) => {
-      // initialize new state
-      const newState = [];
-      const data = snapshot.val();
+  // function to test comment score
+  const checkMessage = async (url, message) => {
+    const attributeScores = await axios
+      .post(url, {
+        comment: {
+          text: message
+        },
+        languages: ["en"],
+        requestedAttributes: {
+          IDENTITY_ATTACK: {},
+          INSULT: {},
+          PROFANITY: {},
+          SEXUALLY_EXPLICIT: {},
+          THREAT: {},
+          TOXICITY: {},
+          SEVERE_TOXICITY: {}
+        }
+      })
+      .then(async (response) => {
+        return response.data.attributeScores
+      }).catch((error) => {
+        console.error('Perspective API Check Failed');
+        return {}
+      })
+    console.log(attributeScores);
 
-      // loop through data and add each board to new state
-      for (let key in data) {
-        newState.push({key: key, name: data[key]});
+    const scores = [];
+    for (let attribute in attributeScores) {
+      if (attributeScores[attribute].summaryScore.value >= 0.5) {
+        scores.push(false);
+      } else {
+        scores.push(true);
       }
-      
-      // set the boards state 
-      setBoards(newState);
-    })
-  }, [])
-
-  useEffect(() => {
-    // messages update
-    const currentBoardRef = firebase.database().ref(`${currentBoard}`);
-    currentBoardRef.on("value", (snapshot) => {
-      // initialize new state
-      const newState = [];
-      const boardData = snapshot.val();
-      const { messages } = boardData;
-
-      // loop through data and add to new state IN REVERSE (newest show at top)
-      for (let key in messages) {
-        newState.unshift({ key: key, details: messages[key] })
-      }
-
-      // set the messages state
-      setMessages(newState);
-    })
-  }, [currentBoard])
-
-  useEffect(() => {
-    if (!currentBoard) {
-      setCurrentBoard(`-M_qnb3Aah2p0BDqMmgq`);
     }
-    // comments update
-    const currentCommentsRef = firebase.database().ref(`${currentBoard}/comments`);
-    currentCommentsRef.on("value", (snapshot) => {
-      // initialize new state
-      const newState = [];
-      const data = snapshot.val();
-
-      // loop through data and add to new state IN REVERSE (newest show at top)
-      for (let key in data) {
-        newState.unshift({ key: key, details: data[key] })
-      };
-
-      // set the comments state
-      setComments(newState);
-    })
-  }, [currentBoard])
+    if (scores.includes(false)) {
+      return false
+    } else {
+      return true
+    }
+  }
 
   // page elements
   // boards
@@ -258,33 +323,51 @@ function App() {
       <Header />
       <main className="main">
         <div className="wrapper mainContainer">
-          {/* side bar with list of message boards */}
-          <MessageBoardList 
-            addNewBoard={handleNewBoardSubmit}
-            newBoardValue={newBoardInput}
-            updateNewBoardValue={handleNewBoardChange}
-            boardsList={boardsList}
-            handleClick={expandComments}
-            isMobileExpanded={mobileExpanded}
-          />
+          {
+            showModal
+              ? <div className="postRejectedModalContainer">
+                  <div className="postRejectedModal">
+                    <p className="postRejectedModalMessage">Please reconsider your post. This is a positivity message board.
+                      <br/><br/>
 
-          {/* new message form */}
-          <div className="messageBoard">
-            <Form
-              submitEvent={handleSubmit}
-              switchCheckbox={handleAnonCheck}
-              isChecked={anonymousChecked}
-              keydownCheckbox={handleEnterAnonymous}
-            />
+                      <strong> Toxic, sexually explicit, profane, threatening, or insulting comments are not permitted.</strong>
+                    </p>
+                    <button className="closePostRejectedModal" onClick={() => setShowModal(false)}>
+                      Close
+                    </button>
+                  </div>
+                </div>
+              : <>
+                  {/* side bar with list of message boards */}
+                  <MessageBoardList
+                    addNewBoard={handleNewBoardSubmit}
+                    newBoardValue={newBoardInput}
+                    updateNewBoardValue={handleNewBoardChange}
+                    boardsList={boardsList}
+                    handleClick={expandComments}
+                    isMobileExpanded={mobileExpanded}
+                  />
 
-            {/* message board */}
-            <section className="messagesBoardContainer">
-              <h2 className="messagesListHeading">Latest Messages on {currentBoardName} Board</h2>
-              <ul>
-                {messagesList}
-              </ul>
-            </section>
-          </div>
+                  {/* new message form */}
+                  <div className="messageBoard">
+                    <Form
+                      submitEvent={handleSubmit}
+                      switchCheckbox={handleAnonCheck}
+                      isChecked={anonymousChecked}
+                      keydownCheckbox={handleEnterAnonymous}
+                    />
+
+                    {/* message board */}
+                    <section className="messagesBoardContainer">
+                      <h2 className="messagesListHeading">Latest Messages on {currentBoardName} Board</h2>
+                      <ul>
+                        {messagesList}
+                      </ul>
+                    </section>
+                  </div>
+                </>
+          }
+          
         </div>
         {/* wrapper ended */}
       </main>

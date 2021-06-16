@@ -676,6 +676,46 @@ input {
   padding: 0;
 }
 
+.postRejectedModalContainer {
+  position: relative;
+  height: calc(100vh - 250px);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.postRejectedModal {
+  background-color: #f9f9f9;
+  border-radius: 20px;
+  position: absolute;
+  height: 80%;
+  width: 80%;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.postRejectedModalMessage {
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
+.closePostRejectedModal {
+  border: 2px solid #232323;
+  border-radius: 10px;
+  font-size: 2rem;
+  padding: 10px 20px;
+}
+
 @media (max-width: 1024px) {
   .submitButton {
     width: 100%;
