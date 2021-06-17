@@ -30,7 +30,6 @@ function App() {
   const [ showModal, setShowModal ] = useState(false);
 
   // selectors
-  const formMessageInput = document.getElementById('message');
   const formNameInput = document.getElementById('name');
   const formNewBoard = document.getElementById('boardName');
 
@@ -198,8 +197,9 @@ function App() {
     // perspective API check
     const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyBMrRb_R0qDCxE9FTeus_TQ4HuHvDSHfXk`);
     const messageTestResult = await checkMessage(analyzeUrl, submittedMessage);
+    const nameTestResult = await checkMessage(analyzeUrl, submittedName);
 
-    if (messageTestResult) {
+    if (messageTestResult && nameTestResult) {
       // update the database
       dbRef.child(`${currentBoard}/comments`).push({ name: submittedName, date: submittedDate, message: submittedMessage, likes: 0, associatedPost: key });
     } else {
@@ -224,8 +224,9 @@ function App() {
     const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyBMrRb_R0qDCxE9FTeus_TQ4HuHvDSHfXk`);
 
     const messageTestResult = await checkMessage(analyzeUrl, submittedMessage);
+    const nameTestResult = await checkMessage(analyzeUrl, submittedName);
     
-    if (messageTestResult) {
+    if (messageTestResult && nameTestResult) {
       // update the database
       currentMessagesRef.push({ message: submittedMessage, name: submittedName, date: submittedDate, likes: 0, clicks: 0 });
 
