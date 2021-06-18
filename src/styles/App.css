@@ -714,6 +714,7 @@ input {
   border-radius: 10px;
   font-size: 2rem;
   padding: 10px 20px;
+  cursor: pointer;
 }
 
 @media (max-width: 1024px) {
