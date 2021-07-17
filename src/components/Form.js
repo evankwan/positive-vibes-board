@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 
 // component for the new message form
-const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComment = false, commentKey, addNewComment, commentMessageInputChange, commentNameInputChange, commentAnonChecked, commentNameInput, commentMessageInput, commentAnonCheck, expandComments, expandCommentForm = [] }) => {
+const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComment = false, commentKey, addNewComment, commentAnonChecked, commentAnonCheck, expandComments, expandCommentForm = [] }) => {
   // states
   const [ expanded, setExpanded ] = useState(false);
   const [ userMessageInput, setUserMessageInput ] = useState('');
@@ -68,14 +68,14 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
         onSubmit={
           ifComment 
           ? (event) => {
-            addNewComment(event, commentKey, commentNameId, commentAnonId, commentMessageId);
+            addNewComment(event, commentKey, commentNameId, commentAnonId, commentMessageId, userNameInput);
             // update the userInput states
-            commentNameInputChange('');
-            commentMessageInputChange('');
+            setUserNameInput('');
+            setUserMessageInput('');
             expandComments();
           }
           : (event) => {
-            submitEvent(event, userMessageInput);
+            submitEvent(event, userMessageInput, userNameInput);
             // update the userInput states
             setUserNameInput('');
             setUserMessageInput('');
@@ -111,17 +111,9 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
                 : "nameInput"
             } 
             type="text" 
-            onChange={
-              ifComment 
-              ? ({ target: { value } }) => commentNameInputChange(value)
-              : ({ target: { value } }) => setUserNameInput(value)
-            } 
+            onChange={({ target: { value } }) => setUserNameInput(value)} 
             placeholder="Enter your name" 
-            value={
-              ifComment 
-              ? commentNameInput
-              : userNameInput
-            } 
+            value={userNameInput} 
             autoComplete="off"
             disabled={
               ifComment 
@@ -220,16 +212,8 @@ const Form = ({ submitEvent, switchCheckbox, isChecked, keydownCheckbox, ifComme
               ? "commentMessageField"
               : "" 
             }`} 
-            onChange={
-              ifComment 
-              ? ({ target: { value } }) => commentMessageInputChange(value)
-              : ({ target: { value } }) => setUserMessageInput(value)
-            } 
-            value={
-              ifComment 
-              ? commentMessageInput
-              : userMessageInput
-            }
+            onChange={({ target: { value } }) => setUserMessageInput(value)} 
+            value={userMessageInput}
             placeholder="Enter Message" 
             required
           ></textarea>

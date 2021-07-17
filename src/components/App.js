@@ -169,7 +169,7 @@ function App() {
     setNewBoardInput('');
 
     // test board name
-    const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyBMrRb_R0qDCxE9FTeus_TQ4HuHvDSHfXk`);
+    const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${process.env.REACT_APP_PERSPECTIVE_API_KEY}`);
     const messageTestResult = await checkMessage(analyzeUrl, submittedBoardName);
 
     if (messageTestResult) {
@@ -181,7 +181,7 @@ function App() {
   }
 
   // handles new comment being submitted on a message
-  const handleNewComment = async (event, key, nameInputId, anonCheckId, messageInputId) => {
+  const handleNewComment = async (event, key, nameInputId, anonCheckId, messageInputId, name) => {
     // prevent reloading the page
     event.preventDefault();
 
@@ -195,7 +195,7 @@ function App() {
     const submittedDate = getFormattedDate(newDate);
 
     // perspective API check
-    const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyBMrRb_R0qDCxE9FTeus_TQ4HuHvDSHfXk`);
+    const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${process.env.REACT_APP_PERSPECTIVE_API_KEY}`);
     const messageTestResult = await checkMessage(analyzeUrl, submittedMessage);
     const nameTestResult = await checkMessage(analyzeUrl, submittedName);
 
@@ -208,7 +208,7 @@ function App() {
   }
 
   // handles new message submit in the new message form
-  const handleSubmit = async (event, message) => {
+  const handleSubmit = async (event, message, name) => {
     // prevent reloading the page
     event.preventDefault();
     
@@ -216,12 +216,12 @@ function App() {
     const submittedName = 
       anonymousChecked
       ? "Anonymous" 
-      : formNameInput.value;
+      : name;
     const submittedMessage = message;
     const newDate = new Date();
     const submittedDate = getFormattedDate(newDate);
 
-    const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyBMrRb_R0qDCxE9FTeus_TQ4HuHvDSHfXk`);
+    const analyzeUrl = new URL(`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${process.env.REACT_APP_PERSPECTIVE_API_KEY}`);
 
     const messageTestResult = await checkMessage(analyzeUrl, submittedMessage);
     const nameTestResult = await checkMessage(analyzeUrl, submittedName);
