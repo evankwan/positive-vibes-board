@@ -28,7 +28,6 @@ function App() {
   const [ mobileExpanded, setMobileExpanded ] = useState(false);
   const [ newBoardInput, setNewBoardInput ] = useState('');
   const [ showModal, setShowModal ] = useState(false);
-  const [ formName, setFormName ] = useState('');
 
   // selectors
   const formNameInput = document.getElementById('name');
